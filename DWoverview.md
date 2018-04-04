@@ -12,16 +12,29 @@ This reference architecture, associated control implementation guides, and threa
 
 ## Architecture Diagram and Components
 
-## Deployment architecture
+## Deployment Architecture
 
 ### Discover
 **Identify which personal data exists and where it resides.**
 
+Azure Active Directory enables administrators to search for user data, and then edit data associated with the user account.
+
 ### Manage
 **Govern how personal data is used and accessed.**
 
+Azure enables you to export your data at any time, without seeking approval from Microsoft. Azure Active Directory (AAD) enables you to export data associated with AAD accounts in a .csv file.
+
 ### Protect
 **Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.**
+
+The solution uses [Azure Key Vault](https://azure.microsoft.com/services/key-vault/) for the management of keys and secrets. Azure Key Vault helps safeguard cryptographic keys and secrets used by cloud applications and services.
+- Advanced access policies are configured on a need basis
+- Key Vault access policies are defined with minimum required permissions to keys and secrets
+- All keys and secrets in Key Vault have expiration dates
+- All keys in Key Vault are protected by HSM [Key Type = HSM Protected 2048-bit RSA Key]
+- All users/identities are granted minimum required permissions using Role Based Access Control (RBAC)
+- Diagnostics logs for Key Vault are enabled with a retention period of at least 365 days.
+- Permitted cryptographic operations for keys are restricted to the ones required
 
 #### Data in Transit
 Azure encrypts all communications to and from Azure datacenters by default. All transactions to Azure Storage through the Azure Portal occur via HTTPS.
