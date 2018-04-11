@@ -2,7 +2,10 @@
 
 ## Overview
 The General Data Protection Regulation (GDPR) is fundamentally about protecting and enabling the privacy rights of individuals.
-The GDPR establishes strict global privacy requirements governing how you manage and protect personal data while respecting individual choice - no matter where data is sent, processed, or stored. Microsoft Azure services meet the stringent GDPR security requirements.
+The GDPR establishes strict global privacy requirements governing how you manage and protect personal data while respecting individual choice - no matter where data is sent, processed, or stored. Microsoft Azure services meet the stringent GDPR security requirements and contractual commitments guarantee that you can:
+- Respond to requests to correct, amend or delete personal data.
+- Detect and report personal data breaches.
+- Demonstrate your compliance with the GDPR.
 
 This Azure Security and Compliance Blueprint provides guidance for how to deliver a Microsoft Azure data warehouse architecture that helps ____. This solution provides guidance on the deployment and configuration of Azure resources for a common reference architecture, demonstrating ways in which customers can meet specific security and compliance requirements and serves as a foundation for customers to build and configure their own data warehouse solutions in Azure.
 
