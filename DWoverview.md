@@ -49,7 +49,7 @@ This solution uses the following Azure services. Details of the deployment archi
 
 ## Deployment Architecture
 
-### Discover
+### **Discover**
 **Identify which personal data exists and where it resides.**
 
 A critical step to addressing GDPR requirements is to identify all personal data managed by the organization, so that they can adequately protect it and respond to data subject requests, such as erasure, rectification, and data portability.  
@@ -60,14 +60,14 @@ Azure Active Directory enables administrators to search for user data, and then 
 
 Using SQL queries, Microsoft customers can correct inaccurate or incomplete data hosted in Azure SQL Database.
 
-### Manage
+### **Manage**
 **Govern how personal data is used and accessed.**
 
 Azure enables you to export your data at any time, without seeking approval from Microsoft. Azure Active Directory (AAD) enables you to export data associated with AAD accounts in a .csv file.
 
 Using SQL queries, Microsoft customers can identify and then export personal data hosted in Azure SQL Database.
 
-#### Virtual Network
+#### **Virtual Network**
 This reference architecture defines a private virtual network with an address space of 10.0.0.0/16.
 
 **Network Security Groups**: [NSGs](https://docs.microsoft.com/azure/virtual-network/virtual-networks-nsg) contain Access Control Lists (ACLs) that allow or deny traffic within a VNet. NSGs can be used to secure traffic at a subnet or individual VM level. The following NSGs exist:
@@ -82,7 +82,7 @@ Each of the NSGs have specific ports and protocols open so that the solution can
 
 **Subnets**: Each subnet is associated with its corresponding NSG.
 
-### Protect
+### **Protect**
 **Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.**
 
 The solution uses [Azure Key Vault](https://azure.microsoft.com/services/key-vault/) for the management of keys and secrets. Azure Key Vault helps safeguard cryptographic keys and secrets used by cloud applications and services.
@@ -94,10 +94,10 @@ The solution uses [Azure Key Vault](https://azure.microsoft.com/services/key-vau
 - Diagnostics logs for Key Vault are enabled with a retention period of at least 365 days.
 - Permitted cryptographic operations for keys are restricted to the ones required
 
-#### Data in Transit
+#### **Data in Transit**
 Azure encrypts all communications to and from Azure datacenters by default. All transactions to Azure Storage through the Azure Portal occur via HTTPS.
 
-#### Data at Rest
+#### **Data at Rest**
 
 The architecture protects data at rest through encryption, database auditing, and other measures.
 
@@ -117,7 +117,7 @@ The Azure SQL Database instance uses the following database security measures:
 -	[Always Encrypted columns](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-always-encrypted-azure-key-vault) ensure that sensitive data never appears as plaintext inside the database system. After enabling data encryption, only client applications or app servers with access to the keys can access plaintext data.
 -	[SQL Database Dynamic Data Masking (DDM)](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-dynamic-data-masking-get-started) limits sensitive data exposure by masking the data to non-privileged users or applications. DDM allows the database administrator to select a particular table-column that contains sensitive data, add a mask to it (there are a few available built-in masks that can be applied, as well as a customizable mask), and designate which database users are privileged and should have access to the real data. Once configured, any query on that table or column will contain masked results, except for queries run by privileged users. DDM can be done after the reference architecture deploys. **Note: Customers will need to adjust DDM settings to adhere to their database schema.**
 
-### Report
+### **Report**
 **Keep required documentation and manage data requests and breach notifications.**
 
 #### Logging and Auditing
