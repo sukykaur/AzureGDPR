@@ -60,7 +60,7 @@ Azure Active Directory enables administrators to search for user data, and then 
 
 Using SQL queries, Microsoft customers can correct inaccurate or incomplete data hosted in Azure SQL Database.
 
-### **Manage**
+### Manage
 **Govern how personal data is used and accessed.**
 
 Azure enables you to export your data at any time, without seeking approval from Microsoft. Azure Active Directory (AAD) enables you to export data associated with AAD accounts in a .csv file.
