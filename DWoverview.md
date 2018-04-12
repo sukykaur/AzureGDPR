@@ -48,8 +48,9 @@ This solution uses the following Azure services. Details of the deployment archi
 - Operations Management Suite (OMS)
 
 ## Deployment Architecture
+The following section details the development and implementation elements.
 
-### **Discover**
+### Discover
 **Identify which personal data exists and where it resides.**
 
 A critical step to addressing GDPR requirements is to identify all personal data managed by the organization, so that they can adequately protect it and respond to data subject requests, such as erasure, rectification, and data portability.  
@@ -67,7 +68,7 @@ Azure enables you to export your data at any time, without seeking approval from
 
 Using SQL queries, Microsoft customers can identify and then export personal data hosted in Azure SQL Database.
 
-#### **Virtual Network**
+#### Virtual Network
 This reference architecture defines a private virtual network with an address space of 10.0.0.0/16.
 
 **Network Security Groups**: [NSGs](https://docs.microsoft.com/azure/virtual-network/virtual-networks-nsg) contain Access Control Lists (ACLs) that allow or deny traffic within a VNet. NSGs can be used to secure traffic at a subnet or individual VM level. The following NSGs exist:
@@ -85,24 +86,26 @@ Each of the NSGs have specific ports and protocols open so that the solution can
 ### **Protect**
 **Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.**
 
-The solution uses [Azure Key Vault](https://azure.microsoft.com/services/key-vault/) for the management of keys and secrets. Azure Key Vault helps safeguard cryptographic keys and secrets used by cloud applications and services.
-- Advanced access policies are configured on a need basis
-- Key Vault access policies are defined with minimum required permissions to keys and secrets
-- All keys and secrets in Key Vault have expiration dates
-- All keys in Key Vault are protected by HSM [Key Type = HSM Protected 2048-bit RSA Key]
+The solution uses [Azure Key Vault](https://azure.microsoft.com/services/key-vault/) for the management of keys and secrets. Azure Key Vault helps safeguard cryptographic keys and secrets used by cloud applications and services. The following Azure Key Vault capabilities help customers protect personal data and access to such data:
+- Advanced access policies are configured on a need basis.
+- Key Vault access policies are defined with minimum required permissions to keys and secrets.
+- All keys and secrets in Key Vault have expiration dates.
+- All keys in Key Vault are protected by specialized hardware security modules (HSMs). The key type is an HSM Protected 2048-bit RSA Key.
 - All users/identities are granted minimum required permissions using Role Based Access Control (RBAC)
 - Diagnostics logs for Key Vault are enabled with a retention period of at least 365 days.
-- Permitted cryptographic operations for keys are restricted to the ones required
+- Permitted cryptographic operations for keys are restricted to the ones required.
 
 #### **Data in Transit**
-Azure encrypts all communications to and from Azure datacenters by default. All transactions to Azure Storage through the Azure Portal occur via HTTPS.
+Azure encrypts all communications to and from Azure datacenters by default. Additionally, all transactions to Azure Storage through the Azure Portal occur via HTTPS.
+
+An [ExpressRoute](https://docs.microsoft.com/en-us/azure/expressroute/expressroute-introduction) or secure VPN tunnel needs to be configured to securely establish a connection to the resources deployed as a part of this data warehouse reference architecture. Further details are in the [Guidance and Recommendations](#-guidance-and-recommendations) section below.
 
 #### **Data at Rest**
 
 The architecture protects data at rest through encryption, database auditing, and other measures.
 
 **Azure Storage**
-To meet encrypted data at rest requirements, all [Azure Storage](https://azure.microsoft.com/services/storage/) uses [Storage Service Encryption](https://docs.microsoft.com/en-us/azure/storage/storage-service-encryption).
+To meet encrypted data at rest requirements, all [Azure Storage](https://azure.microsoft.com/services/storage/) uses [Storage Service Encryption](https://docs.microsoft.com/en-us/azure/storage/storage-service-encryption). This helps protect and safeguard personal data in support of organizational security commitments and compliance requirements defined by the GDPR.
 
 **Azure Disk Encryption**
 [Azure Disk Encryption](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) leverages the BitLocker feature of Windows to provide volume encryption for OS and data disks. The solution integrates with Azure Key Vault to help control and manage the disk-encryption keys.
@@ -111,11 +114,11 @@ To meet encrypted data at rest requirements, all [Azure Storage](https://azure.m
 The Azure SQL Database instance uses the following database security measures:
 -	[AD Authentication and Authorization](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-aad-authentication) enables identity management of database users and other Microsoft services in one central location.
 -	[SQL database auditing](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-auditing-get-started) tracks database events and writes them to an audit log in an Azure storage account.
--	SQL Database is configured to use [Transparent Data Encryption (TDE)](https://docs.microsoft.com/en-us/sql/relational-databases/security/encryption/transparent-data-encryption-azure-sql), which performs real-time encryption and decryption of data and log files to protect information at rest. TDE provides assurance that stored data has not been subject to unauthorized access.
+-	SQL Database is configured to use [Transparent Data Encryption (TDE)](https://docs.microsoft.com/en-us/sql/relational-databases/security/encryption/transparent-data-encryption-azure-sql), which performs real-time encryption and decryption of data and log files to protect information at rest. TDE provides assurance that stored personal data has not been subject to unauthorized access.
 -	[Firewall rules](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-firewall-configure) prevent all access to database servers until proper permissions are granted. The firewall grants access to databases based on the originating IP address of each request.
 -	[SQL Threat Detection](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-threat-detection-get-started) enables the detection and response to potential threats as they occur by providing security alerts for suspicious database activities, potential vulnerabilities, SQL injection attacks, and anomalous database access patterns.
--	[Always Encrypted columns](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-always-encrypted-azure-key-vault) ensure that sensitive data never appears as plaintext inside the database system. After enabling data encryption, only client applications or app servers with access to the keys can access plaintext data.
--	[SQL Database Dynamic Data Masking (DDM)](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-dynamic-data-masking-get-started) limits sensitive data exposure by masking the data to non-privileged users or applications. DDM allows the database administrator to select a particular table-column that contains sensitive data, add a mask to it (there are a few available built-in masks that can be applied, as well as a customizable mask), and designate which database users are privileged and should have access to the real data. Once configured, any query on that table or column will contain masked results, except for queries run by privileged users. DDM can be done after the reference architecture deploys. **Note: Customers will need to adjust DDM settings to adhere to their database schema.**
+-	[Always Encrypted columns](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-always-encrypted-azure-key-vault) ensure that sensitive personal data never appears as plaintext inside the database system. After enabling data encryption, only client applications or app servers with access to the keys can access plaintext data.
+-	[SQL Database Dynamic Data Masking (DDM)](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-dynamic-data-masking-get-started) limits sensitive personal data exposure by masking the data to non-privileged users or applications. DDM allows the database administrator to select a particular table-column that contains sensitive personal data, add a mask to it (there are a few available built-in masks that can be applied, as well as a customizable mask), and designate which database users are privileged and should have access to the real data. Once configured, any query on that table or column will contain masked results, except for queries run by privileged users. DDM can be done after the reference architecture deploys. **Note: Customers will need to adjust DDM settings to adhere to their database schema.**
 
 ### **Report**
 **Keep required documentation and manage data requests and breach notifications.**
@@ -123,7 +126,7 @@ The Azure SQL Database instance uses the following database security measures:
 #### Logging and Auditing
 
 [Operations Management Suite (OMS)](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) provides extensive logging of system and user activity, as well as system health. The OMS [Log Analytics](https://azure.microsoft.com/services/log-analytics/) solution collects and analyzes data generated by resources in Azure and on-premises environments.
-- **Activity Logs**: [Activity logs](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitoring-overview-activity-logs) provide insight into operations performed on resources in a subscription.
+- **Activity Logs**: [Activity logs](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitoring-overview-activity-logs) provide insight into operations performed on resources in a subscription. Activity logs can help determine who initiated an operation, when it occurred, and what the status of the operation was.
 - **Diagnostic Logs**: [Diagnostic logs](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitoring-overview-of-diagnostic-logs) include all logs emitted by every resource. These logs include Windows event system logs and Azure Blob storage, tables, and queue logs.
 - **Firewall Logs**: The Application Gateway provides full diagnostic and access logs. Firewall logs are available for WAF-enabled Application Gateway resources.
 - **Log Archiving**: All diagnostic logs write to a centralized and encrypted Azure storage account for archival with a defined retention period of 2 days. These logs connect to Azure Log Analytics for processing, storing, and dashboard reporting.
@@ -144,6 +147,9 @@ Additionally, the following OMS solutions are included as a part of this archite
 The data flow diagram (DFD) for this reference architecture is available for [download](https://aka.ms/blueprintdwthreatmodel) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
 
 ## Compliance Documentation
+The Azure Security and Compliance Blueprint – GDPR Customer Responsibility Matrix lists controller and processor responsibilities for all GDPR articles. Please note that for Azure services, a customer is usually the controller and Microsoft acts as the processor. 
+
+The Azure Security and Compliance Blueprint - GDPR DW Control Implementation Matrix provides information on which GDPR articles are addressed by the data warehouse architecture, including detailed descriptions of how the implementation meets the requirements of each covered article.
 
 ## Guidance and Recommendations
 ### ExpressRoute and VPN
