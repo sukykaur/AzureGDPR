@@ -7,13 +7,45 @@ The GDPR establishes strict global privacy requirements governing how you manage
 - Detect and report personal data breaches.
 - Demonstrate your compliance with the GDPR.
 
-This Azure Security and Compliance Blueprint provides guidance for how to deliver a Microsoft Azure data warehouse architecture that helps ____. This solution provides guidance on the deployment and configuration of Azure resources for a common reference architecture, demonstrating ways in which customers can meet specific security and compliance requirements and serves as a foundation for customers to build and configure their own data warehouse solutions in Azure.
+This Azure Security and Compliance Blueprint provides guidance for how to deliver a Microsoft Azure data warehouse architecture that helps organizations identify and catalog personal data in systems, build more secure environments, and simplify management of GDPR compliance. This solution provides guidance on the deployment and configuration of Azure resources for a common reference architecture, demonstrating ways in which customers can meet specific security and compliance requirements and serves as a foundation for customers to build and configure their own data warehouse solutions in Azure.
 
 This reference architecture, associated control implementation guides, and threat models are intended to serve as a foundation for customers to adjust to their specific requirements and should not be used as-is in a production environment. Please note the following:
 - The architecture provides a baseline to help customers deploy workloads to Azure in a GDPR-compliant manner.
 - Customers are responsible for conducting appropriate security and compliance assessments of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
 ## Architecture Diagram and Components
+This solution uses the following Azure services. Details of the deployment architecture are in the [Deployment Architecture](#deployment-architecture) section.
+
+- Azure Virtual Machines
+  -	(1) Bastion Host
+  -	(2) Active Directory domain controller
+  -	(2) SQL Server Cluster Node
+  -	(1) SQL Server Witness
+
+
+- Availability Sets
+  -	(1) Active Directory domain controllers
+  -	(1) SQL cluster nodes and witness
+
+
+- Virtual Network
+  -	(4) Subnets
+  -	(4) Network Security Groups
+
+
+- SQL Data Warehouse
+
+- SQL Server Reporting Services
+
+- Azure SQL Load Balancer
+
+- Azure Active Directory
+
+- Recovery Services Vault
+
+- Azure Key Vault
+
+- Operations Management Suite (OMS)
 
 ## Deployment Architecture
 
