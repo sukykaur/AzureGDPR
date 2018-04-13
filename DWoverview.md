@@ -61,12 +61,14 @@ Azure Active Directory enables administrators to search for user data, and then 
 
 Using SQL queries, Microsoft customers can correct inaccurate or incomplete data hosted in Azure SQL Database.
 
+**Data Catalog**: [Data Catalog](https://docs.microsoft.com/en-us/azure/data-catalog/data-catalog-what-is-data-catalog) makes data sources easily discoverable and understandable by the users who manage the data. Common data sources can be registered, tagged, and searched for personal data. The data remains in its existing location, but a copy of its metadata is added to Data Catalog, along with a reference to the data source location. The metadata is also indexed to make each data source easily discoverable via search and understandable to the users who discover it.
+
 ### Manage
 **Govern how personal data is used and accessed.**
 
 Azure enables customers to export their data at any time, without seeking approval from Microsoft. Azure Active Directory (AAD) enables customers to export data associated with AAD accounts in a .csv file.
 
-Using SQL queries, Microsoft customers can identify and then export personal data hosted in Azure SQL Database.
+Using SQL queries, Microsoft customers can identify and then export personal data hosted in Azure SQL Database. The Extended Properties feature can be used to discontinue the processing of data subjects, as it allows users to add custom properties to database objects and tag data as "Discontinued" to support application logic to prevent the processing of associated personal data. [Row-Level Security](https://docs.microsoft.com/en-us/sql/relational-databases/security/row-level-security) enables users to define policies to restrict access to data to discontinue processing.
 
 #### Virtual Network
 This reference architecture defines a private virtual network with an address space of 10.0.0.0/16.
@@ -83,7 +85,7 @@ Each of the NSGs have specific ports and protocols open so that the solution can
 
 **Subnets**: Each subnet is associated with its corresponding NSG.
 
-### **Protect**
+### Protect
 **Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.**
 
 The solution uses [Azure Key Vault](https://azure.microsoft.com/services/key-vault/) for the management of keys and secrets. Azure Key Vault helps safeguard cryptographic keys and secrets used by cloud applications and services. The following Azure Key Vault capabilities help customers protect personal data and access to such data:
@@ -125,7 +127,7 @@ The Azure SQL Database instance uses the following database security measures:
 
 **Recovery Services Vault**: The [Recovery Services Vault](https://docs.microsoft.com/en-us/azure/backup/backup-azure-recovery-services-vault-overview) houses backup data and protects all configurations of Azure Virtual Machines in this architecture. With a Recovery Services Vault, customers can restore files and folders from an IaaS VM without restoring the entire VM, enabling faster restore times.
 
-### **Report**
+### Report
 **Keep required documentation and manage data requests and breach notifications.**
 
 #### Logging and Auditing
