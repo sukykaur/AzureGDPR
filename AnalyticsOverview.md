@@ -1,555 +1,166 @@
-# Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI
+# Azure Security and Compliance Blueprint: Analytics for GDPR
 
 ## Overview
+The General Data Protection Regulation (GDPR) is fundamentally about protecting and enabling the privacy rights of individuals.
+The GDPR establishes strict global privacy requirements governing how you manage and protect personal data while respecting individual choice - no matter where data is sent, processed, or stored. Microsoft Azure services meet the stringent GDPR security requirements and Microsoft's contractual commitments guarantee that you can:
+- Respond to requests to correct, amend or delete personal data.
+- Detect and report personal data breaches.
+- Demonstrate your compliance with the GDPR.
 
-**The Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI offers a turn-key deployment of
-an Azure PaaS solution to demonstrate how to securely ingest, store,
-analyze, and interact with health data while being able to meet industry
-compliance requirements. The blueprint helps accelerate cloud adoption
-and utilization for customers with data that is regulated.**
+This Azure Security and Compliance Blueprint provides guidance for how to deliver a Microsoft Azure data warehouse architecture that helps organizations identify and catalog personal data in systems, build more secure environments, and simplify management of GDPR compliance. This solution provides guidance on the deployment and configuration of Azure resources for a common reference architecture, demonstrating ways in which customers can meet specific security and compliance requirements and serves as a foundation for customers to build and configure their own data warehouse solutions in Azure.
 
-The Azure Security and Compliance Blueprint - HIPAA/HITRUST Health Data and AI Blueprint provides tools and guidance to help
-deploy a secure,  Health Insurance Portability and Accountability Act (HIPAA), and Health Information Trust Alliance (HITRUST) ready platform-as-a-service
-(PaaS) environment for ingesting, storing, analyzing, and interacting
-with personal and non-personal medical records in a secure,
-multi-tier cloud environment, deployed as an end-to-end solution. It
-showcases a common reference architecture and is designed to simplify
-adoption of Microsoft Azure. This provided architecture illustrates a
- solution to meet the needs of organizations seeking a
-cloud-based approach to reducing the burden and cost of deployment.
+This reference architecture, associated control implementation guides, and threat models are intended to serve as a foundation for customers to adjust to their specific requirements and should not be used as-is in a production environment. Please note the following:
+- The architecture provides a baseline to help customers deploy workloads to Azure in a GDPR-compliant manner.
+- Customers are responsible for conducting appropriate security and compliance assessments of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
-![](images/components.png)
+## Architecture Diagram and Components
+This solution uses the following Azure services. Details of the deployment architecture are in the [Deployment Architecture](#deployment-architecture) section.
 
-The solution is designed to consume a sample data set formatted using
-Fast Healthcare Interoperability Resources (FHIR), a worldwide standard
-for exchanging healthcare information electronically, and store it in a
-secure manner. Customers can then use Azure Machine Learning to take
-advantage of powerful business intelligence tools and analytics to
-review predictions made on the sample data. As an example of the kind of
-experiment Azure Machine Learning can facilitate, the blueprint includes
-a sample dataset, scripts, and tools for predicting the length of a
-patient's stay in a hospital facility.
+- Availability Sets
+  -	(1) Active Directory domain controllers
 
-This blueprint is intended to serve as a modular foundation for customers
-to adjust to their specific requirements, developing new Azure Machine
-learning experiments to solve both clinical and operational use case scenarios.
-It is designed to be secure and compliant when deployed; however, customers are responsible for
-configuring roles correctly and implementing any modifications. Note the following:
 
--   This blueprint provides a baseline to help customers use Microsoft
-    Azure in a HITRUST, and HIPAA environment.
+- Virtual Network
+  -	(4) Subnets
+  -	(4) Network Security Groups
 
--   Although the blueprint was designed to be aligned with
-HIPAA and HITRUST (through the Common Security Framework
-    -- CSF), it should not be considered compliant until certified by an
-    external auditor per HIPAA and HITRUST certification requirements.
 
--   Customers are responsible for conducting appropriate security and
-    compliance reviews of any solution built using this foundational
-    architecture.
+- Azure Active Directory
 
-## Deploying the automation
+- Azure Key Vault
 
-- To deploy the solution, follow the instructions provided in the deployment guidance.
+- Operations Management Suite (OMS)
 
-[![](./images/deploy.png)](https://aka.ms/healthblueprintdeploy)
+## Deployment Architecture
 
-For a quick overview of how this solution works, watch this [video](https://aka.ms/healthblueprintvideo) explaining and demonstrating its deployment.
+### **Discover**
+**Identify which personal data exists and where it resides.**
 
-- Frequently asked question can be found in the [FAQ](https://aka.ms/healthblueprintfaq) guidance.
+A critical step to addressing GDPR requirements is to identify all personal data managed by the organization, so that they can adequately protect it and respond to data subject requests, such as erasure, rectification, and data portability.  
 
--   **Architectural diagram.** The diagram shows the reference
-    architecture used for the blueprint and the example use case scenario.
+ **Azure Active Directory**: [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/active-directory-whatis) Azure Active Directory (Azure AD) is Microsoft’s multi-tenant, cloud-based directory, and identity management service that combines core directory services, application access management, and identity protection into a single solution. Azure AD also offers a rich, standards-based platform that enables developers to deliver access control to their applications, based on centralized policy and rules.
 
--   **Deployment templates**. In this deployment, [Azure Resource
-    Manager
-    templates](/azure/azure-resource-manager/resource-group-overview#template-deployment)
-    are used to automatically deploy the components of the architecture
-    into Microsoft Azure by specifying configuration parameters during
-    setup.
+Azure Active Directory enables administrators to search for user data, and then edit data associated with the user account.
 
--   **[Automated deployment scripts](https://aka.ms/healthblueprintdeploy)**. These scripts help deploy the
-     solution. The scripts consist of:
+**Azure Data Catalog**: [Azure Data Catalog](https://docs.microsoft.com/en-us/azure/data-catalog/data-catalog-what-is-data-catalog) is a fully managed cloud service whose users can discover the data sources they need and understand the data sources they find. At the same time, Data Catalog helps organizations get more value from their existing investments.
 
+### Manage
+**Govern how personal data is used and accessed.**
 
--   A module installation and [global
-    administrator](/azure/active-directory/active-directory-assign-admin-roles-azure-portal)
-    setup script is used to install and verify that required PowerShell
-    modules and global administrator roles are configured correctly.
--   An installation PowerShell script is used to deploy the
-    solution, provided via a .zip file that contains a pre-built
-    demo functions.
+Azure enables you to export your data at any time, without seeking approval from Microsoft. Azure Active Directory (AAD) enables you to export data associated with AAD accounts in a .csv file.
 
-## Solution components
+**Azure SQL Database**: [SQL Database](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-technical-overview) is a general-purpose relational database managed service in Microsoft Azure that supports structures such as relational data, JSON, spatial, and XML. SQL Database offers managed single SQL databases, managed SQL databases in an elastic pool, and SQL Managed Instances (in public preview). It delivers dynamically scalable performance and provides options such as columnstore indexes for extreme analytic analysis and reporting, and in-memory OLTP for extreme transactional processing. Microsoft handles all patching and updating of the SQL code base seamlessly and abstracts away all management of the underlying infrastructure.
 
+Using SQL queries, Microsoft customers can correct inaccurate or incomplete data hosted in Azure SQL Database.
 
-The foundational architecture is composed of the following components:
+**Azure Monitor**
+[Azure Monitor](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/) is part of Microsoft Azure's overall monitoring solution. Azure Monitor helps you track performance, maintain security, and identify trends. Learn how to audit, create alerts, and archive data with our quickstarts and tutorials.
 
--   **[Threat model](https://aka.ms/healththreatmodel)** A comprehensive threat model is provided in tm7
-    format for use with the [Microsoft Threat Modeling
-    Tool](https://www.microsoft.com/en-us/download/details.aspx?id=49168),
-    showing the components of the solution, the data flows between them,
-    and the trust boundaries. The model can help customers understand
-    the points of potential risk in the system infrastructure when
-    developing machine learning components or other modifications.
+**Azure Machine Learning**
+[Azure Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/preview/) services (preview) enable building, deploying, and managing machine learning and AI models using any Python tools and libraries. You can use a wide variety of data and compute services in Azure to store and process your data.
 
--   **[Customer implementation matrix](https://aka.ms/healthcrmblueprint)** A Microsoft Excel workbook lists
-    the relevant HITRUST requirements and explains how Microsoft and the
-    customer are responsible for meeting each one.
+**Azure Functions**
+[Azure Machine Learning](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview) is a solution for easily running small pieces of code, or "functions," in the cloud. You can write just the code you need for the problem at hand, without worrying about a whole application or the infrastructure to run it. Functions can make development even more productive, and you can use your development language of choice, such as C#, F#, Node.js, Java, or PHP. Pay only for the time your code runs and trust Azure to scale as needed. Azure Functions lets you develop serverless applications on Microsoft Azure.
 
--   **[Health review.](https://aka.ms/healthreviewpaper)** The solution was reviewed by Coalfire systems, Inc. The Health Compliance (HIPAA, and HITRUST)
-    Review and guidance for implementation provides an auditor\'s review
-    of the solution, and considerations for transforming the blueprint
-    to a production-ready deployment.
+**Azure Event Grid**
+[Azure Event Grid](https://docs.microsoft.com/en-us/azure/event-grid/overview) allows you to easily build applications with event-based architectures. You select the Azure resource you would like to subscribe to, and give the event handler or WebHook endpoint to send the event to. Event Grid has built-in support for events coming from Azure services, like storage blobs and resource groups. Event Grid also has custom support for application and third-party events, using custom topics and custom webhooks.
 
-# Architectural diagram
+#### **Virtual Network**
+This reference architecture defines a private virtual network with an address space of 10.0.0.0/16.
 
+**Network Security Groups**: [NSGs](https://docs.microsoft.com/azure/virtual-network/virtual-networks-nsg) contain Access Control Lists (ACLs) that allow or deny traffic within a VNet. NSGs can be used to secure traffic at a subnet or individual VM level. The following NSGs exist:
+  -	An NSG for Active Directory
 
-![](images/refarch.png)
+Each of the NSGs have specific ports and protocols open so that the solution can work securely and correctly. In addition, the following configurations are enabled for each NSG:
+  -	[Diagnostic logs and events](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-nsg-manage-log) are enabled and stored in a storage account
+  -	OMS Log Analytics is connected to the [NSG's diagnostics](https://github.com/krnese/AzureDeploy/blob/master/AzureMgmt/AzureMonitor/nsgWithDiagnostics.json)
 
-## Roles
+**Subnets**: Each subnet is associated with its corresponding NSG.
 
+### **Protect**
+**Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.**
 
-The blueprint defines two roles for administrative users (operators),
-and three roles for users in hospital management and patient care. A
-sixth role is defined for an auditor to evaluate compliance with HIPAA
-and other regulations. Azure Role-based Access Control (RBAC) enables
-precisely focused access management for each user of the solution
-through built-in and custom roles. See [Get started with Role-Based
-Access Control in the Azure portal](https://docs.microsoft.com/azure/active-directory/role-based-access-control-what-is)
-and [Built-in roles for Azure role-based access
-control](https://docs.microsoft.com/azure/active-directory/role-based-access-built-in-roles)
-for detailed information about RBAC, roles, and permissions.
+The solution uses [Azure Key Vault](https://azure.microsoft.com/services/key-vault/) for the management of keys and secrets. Azure Key Vault helps safeguard cryptographic keys and secrets used by cloud applications and services.
+- Advanced access policies are configured on a need basis
+- Key Vault access policies are defined with minimum required permissions to keys and secrets
+- All keys and secrets in Key Vault have expiration dates
+- All keys in Key Vault are protected by HSM [Key Type = HSM Protected 2048-bit RSA Key]
+- All users/identities are granted minimum required permissions using Role Based Access Control (RBAC)
+- Diagnostics logs for Key Vault are enabled with a retention period of at least 365 days.
+- Permitted cryptographic operations for keys are restricted to the ones required
 
-### Site Administrator
+#### **Data in Transit**
+Azure encrypts all communications to and from Azure datacenters by default. All transactions to Azure Storage through the Azure Portal occur via HTTPS.
 
+#### **Data at Rest**
 
-The site administrator is responsible for the customer's Azure
-subscription. They control the overall deployment, but have no access to
-patient records.
+The architecture protects data at rest through encryption, database auditing, and other measures.
 
--   Default role assignments:
-    [Owner](https://docs.microsoft.com/azure/active-directory/role-based-access-built-in-roles#owner)
+**Azure Storage**
+To meet encrypted data at rest requirements, all [Azure Storage](https://azure.microsoft.com/services/storage/) uses [Storage Service Encryption](https://docs.microsoft.com/en-us/azure/storage/storage-service-encryption).
 
--   Custom role assignments: N/A
+**Azure Disk Encryption**
+[Azure Disk Encryption](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) leverages the BitLocker feature of Windows to provide volume encryption for OS and data disks. The solution integrates with Azure Key Vault to help control and manage the disk-encryption keys.
 
--   Scope: Subscription
-
-### Database Analyst
-
-The database analyst administers the SQL Server instance and database.
-They have no access to patient records.
-
--   Built-in role assignments: [SQL DB
-    Contributor](https://docs.microsoft.com/azure/active-directory/role-based-access-built-in-roles#sql-db-contributor),
-    [SQL Server
-    Contributor](https://docs.microsoft.com/azure/active-directory/role-based-access-built-in-roles#sql-server-contributor)
-
--   Custom role assignments: N/A
-
--   Scope: ResourceGroup
-
- ### Data Scientist
-
-
-The data scientist operates the Azure Machine Learning service. They can
-import, export, and manage data, and run reports. The data scientist has
-access to patient data, but does not have administrative privileges.
-
--   Built-in role assignments: [Storage Account
-    Contributor](https://docs.microsoft.com/azure/active-directory/role-based-access-built-in-roles#storage-account-contributor)
-
--   Custom role assignments: N/A
-
--   Scope: ResourceGroup
-
-### Chief Medical Information Officer (CMIO)
-
-
-The CMIO straddles the divide between informatics/technology and
-healthcare professionals in a healthcare organization. Their duties
-typically include using analytics to determine if resources are being
-allocated appropriately within the organization.
-
--   Built-in role assignments: None
-
-### Care Line Manager
-
-
-The care line manager is directly involved with the care of patients.
-This role requires monitoring the status of individual patients as well
-as ensuring that staff is available to meet the specific care
-requirements of their patients. The care line manager is responsible for
-adding and updating patient records.
-
--   Built-in role assignments: None
-
--   Custom role assignments: Has privilege to run HealthcareDemo.ps1 to
-    do both Patient Admission, and Discharge.
-
--   Scope: ResourceGroup
-
-### Auditor
-
-
-The auditor evaluates the solution for compliance. They have no direct
-access to the network.
-
--   Built-in role assignments:
-    [Reader](https://docs.microsoft.com/azure/active-directory/role-based-access-built-in-roles#reader)
-
--   Custom role assignments: N/A
-
--   Scope: Subscription
-
-## Example Use case
-
-
-The example use case included with this blueprint illustrates how the
- Blueprint can be used to enable machine learning and
-analytics on health data in the cloud. Contosoclinic is a small
-hospital located in the United States. The hospital network
-administrators want to use Azure Machine Learning to better predict the
-length of a patient's stay at the time of admittance, in order to
-increase operational workload efficiency, and enhance the quality of care
-it can provide.
-
-### Predicting length of stay
-
-
-The example use case scenario uses Azure Machine Learning to predict a newly
-admitted patient's length of stay by comparing the medical details taken
-at patient intake to aggregated historical data from previous patients.
-The blueprint includes a large set of anonymized medical records to
-demonstrate the training and predictive capabilities of the solution. In
-a production deployment, customers would use their own records to train
-the solution for more accurate predictions reflecting the unique details
-of their environment, facilities, and patients.
-
-### Users and roles
-
-
-**Site Administrator -- Alex**
-
-*Email: Alex\_SiteAdmin*
-
-Alex's job is to evaluate technologies that can reduce the burden of
-managing an on-premise network and reduce costs for management. Alex has
-been evaluating Azure for some time but has struggled to configure the
-services that he needs to meet the HiTrust compliance requirements to
-store Patient Data in the cloud. Alex has selected the Azure
-Health AI to deploy a compliance-ready health
-solution, which has addressed the requirements to meet the customer
-requirements for HiTrust.
-
-**Data Scientist -- Debra**
-
-*Email: Debra\_DataScientist*
-
-Debra is in charge of using and creating models that analyze medical
-records to provide insights into patient care. Debra uses SQL and the R
-statistical programming language to create her models.
-
-**Database Analyst -- Danny**
-
-*Email: Danny\_DBAnalyst*
-
-Danny is the main contact for anything regarding the Microsoft SQL
-Server that stores all the patient data for Contosoclinic. Danny is an
-experienced SQL Server administrator who has recently become familiar
-with Azure SQL Database.
-
-**Chief Medical Information Officer -- Caroline**
-
-Caroline is working with Chris the Care Line Manager, and Debra the
-Data Scientist to determine what factors impact patient length of stay.
-Caroline uses the predictions from the length-of-stay (LOS) solution
-to determine if resources are being allocated appropriately in the
-hospital network. For example, using the dashboard provided in this
-solution.
-
-**Care Line Manager -- Chris**
-
-*Email: Chris\_CareLineManager*
-
-As the individual directly responsible for managing patient admission,
-and discharges at Contosoclinic, Chris uses the predictions
-generated by the LOS solution to ensure that adequate staff are
-available to provide care to patients while they are staying in the
-facility.
-
-**Auditor -- Han**
-
-*Email: Han\_Auditor*
-
-Han is a certified auditor who has experience auditing for ISO, SOC, and
-HiTrust. Han was hired to review Contosoclinc's network. Han can
- review the Customer Responsibility Matrix
-provided with the solution to ensure that the blueprint and LOS solution
-can be used to store, process, and display sensitive personal data.
-
-
-# Design configuration
-
-
-This section details the default configurations and security measures
-built into the Blueprint outlined to:
-
-- **INGEST** data raw sources including FHIR data source
-- **STORE**  sensitive information
-- **ANALYZE** and predict outcomes
-- **INTERACT** with the results and predictions
-- **IDENTITY** management of solution
-- **SECURITY** enabled features
-
-
-## IDENTITY
-
-### Azure Active Directory and role-based access control (RBAC)
-
-
-**Authentication:**
-
--   [Azure Active Directory (Azure
-    AD)](https://azure.microsoft.com/services/active-directory/) is the
-    Microsoft\'s multi-tenant cloud-based directory and identity
-    management service. All users for the solution were created in Azure
-    Active Directory, including users accessing the SQL Database.
-
-
-
--   Authentication to the application is performed using Azure AD. For
-    more information, see [Integrating applications with Azure Active
-    Directory](/azure/active-directory/develop/active-directory-integrating-applications).
-
--   [Azure Active Directory Identity
-    Protection](/azure/active-directory/active-directory-identityprotection)
-    detects potential vulnerabilities affecting your organization's
-    identities, configures automated responses to detected suspicious
-    actions related to your organization's identities, and investigates
-    suspicious incidents and takes appropriate action to resolve them.
-
--   [Azure Role-based Access Control
-    (RBAC)](/azure/active-directory/role-based-access-control-configure)
-    enables precisely focused access management for Azure. Subscription
-    access is limited to the subscription administrator, and Azure Key
-    Vault access is limited to the site administrator. Strong passwords
-    (12 characters minimum with at least one Upper/Lower letter, number,
-    and special character) are required.
-
--   Multi-factor authentication is supported when the -enableMFA switch is
-    enabled during deployment.
-
--   Passwords expire after 60 days when the -enableADDomainPasswordPolicy
-    switch is enabled during deployment.
-
-**Roles:**
-
--   The solution makes use of [built-in
-    roles](/azure/active-directory/role-based-access-built-in-roles)
-    to manage access to resources.
-
--   All users are assigned specific built-in roles by default.
-
-### Azure Key Vault
-
--   Data stored in Key Vault includes:
-
-    -   Application insight key
-    -   Patient Data Storage Access key
-    -   Patient connection string
-    -   Patient data table name
-    -   Azure ML Web Service Endpoint
-    -   Azure ML Service API Key
-
--   Advanced access policies are configured on a need basis
--   Key Vault access policies are defined with minimum required
-    permissions to keys and secrets
--   All keys and secrets in Key Vault have expiration dates
--   All keys in Key Vault are protected by HSM \[Key Type = HSM
-    Protected 2048-bit RSA Key\]
--   All users/identities are granted minimum required permissions using
-    Role Based Access Control (RBAC)
--   Applications do not share a Key Vault unless they trust each other
-    and they need access to the same secrets at runtime
--   Diagnostics logs for Key Vault are enabled with a retention period
-    of at least 365 days.
--   Permitted cryptographic operations for keys are restricted to the
-    ones required
-
-## INGEST
-
-### Azure Functions
-The solution was designed to  use [Azure Functions](/azure/azure-functions/) to process the sample length of stay data used in the analytics demo. Three capabilities in the functions have been created.
-
-**1. Bulk import of customer data phi data**
-
-When using the demo script. .\\HealthcareDemo.ps1 with the **BulkPatientAdmission** switch as outlined in **Deploying and running the demo** it executes the following processing pipeline:
-1. **Azure Blob Storage** - Patient data .csv file sample uploaded to storage
-2. **Event Grid** - Event Publishes data to Azure Function (Bulk import - blob event)
-3. **Azure Function** - Performs the processing and stores the data into SQL Storage using the secure function - event(type; blob url)
-4. **SQL DB** - The database store for Patient Data using tags for classification, and the ML process is kicked off to do the training experiment.
-
-![](images/dataflow.png)
-
-Additionally the azure function was designed to read and protect designated sensitive data in the sample data set using the following tags:
-- dataProfile => “ePHI”
-- owner => \<Site Admin UPN\>
-- environment => “Pilot”
-- department => “Global Ecosystem"
-The tagging was applied to the sample data set where patient 'names' was identified as clear text.
-
-**2. Admission of new patients**
-
-When using the demo script. .\\HealthcareDemo.ps1 with the **BulkPatientadmission** switch as outlined in **Deploying and running the demo** it executes the following processing pipeline:
-![](images/securetransact.png)
-**1. Azure Function** triggered and the function requests for a [bearer token](/rest/api/) from Azure Active directory.
-
-**2. Key Vault** requested for a secret that is associated to the requested token.
-
-**3. Azure Roles validate the request, and authorize access request to the Key Vault.
-
-**4. Key Vault** returns the secret, in this case the SQL DB Connection string.
-
-**5. Azure Function** uses the connection string to securely connect to SQL Database and continues further processing to store ePHI data.
-
-To achieve the storage of the data, a common API schema was implemented  following Fast Healthcare Interoperability Resources (FHIR, pronounced fire). The function was provided the following FHIR exchange elements:
-
--   [Patient schema](https://www.hl7.org/fhir/patient.html) covers the "who" information about a patient.
-
--   [Observation schema](https://www.hl7.org/fhir/observation.html)  covers the central element in healthcare, used to support diagnosis, monitor progress, determine baselines and patterns and even capture demographic characteristics.
-
--   [Encounter schema](https://www.hl7.org/fhir/encounter.html) covers the types of encounters such as ambulatory, emergency, home health, inpatient, and virtual encounters.
-
--   [Condition schema](https://www.hl7.org/fhir/condition.html) covers detailed information about a condition, problem, diagnosis, or other event, situation, issue, or clinical concept that has risen to a level of concern.  
-
-
-
-### Event Grid
-
-
-The solution supports Azure Event Grid, a single service for managing
-routing of all events from any source to any destination, providing:
-
--   [Security and
-    authentication](/azure/event-grid/security-authentication)
-
--   [Role-based access
-    control](/azure/event-grid/security-authentication#management-access-control)
-    for various management operations such as listing event
-    subscriptions, creating new ones, and generating keys
-
--   Auditing
-
-## STORE
-
-### SQL Database and Server
-
-
--   [Transparent Data Encryption
-    (TDE)](/sql/relational-databases/security/encryption/transparent-data-encryption-azure-sql)
-    provides real-time encryption and decryption of data stored in the
-    Azure SQL Database, using a key stored in Azure Key Vault.
-
--   [SQL Vulnerability
-    Assessment](https://docs.microsoft.com/azure/sql-database/sql-vulnerability-assessment)
-    is an easy to configure tool that can discover, track, and remediate
-    potential database vulnerabilities.
-
--   [SQL Database Threat
-    Detection](/azure/sql-database/sql-database-threat-detection)
-     enabled.
-
--   [SQL Database
-    Auditing](/azure/sql-database/sql-database-auditing)
-     enabled.
-
--   [SQL Database metrics and diagnostic
-    logging](/azure/sql-database/sql-database-metrics-diag-logging)
-     enabled.
-
--   [Server- and database-level firewall
-    rules](/azure/sql-database/sql-database-firewall-configure)
-    have been tightened.
-
--   [Always Encrypted
-    columns](/azure/sql-database/sql-database-always-encrypted-azure-key-vault)
-    are used to protect patient first, middle, and last names.
-    Additionally, the database column encryption also uses Azure Active Directory (AD) to
-    authenticate the application to Azure SQL Database.
-
--   Access to SQL Database and SQL Server is configured according to the
-    principle of least privilege.
-
--   Only required IP addresses are allowed access through the SQL
-    firewall.
-
-### Storage accounts
-
-
--   [Data in motion is transferred using TLS/SSL
-    only](/azure/storage/common/storage-require-secure-transfer?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json).
-
--   Anonymous access is not allowed for containers.
-
--   Alert rules are configured for tracking anonymous activity.
-
--   HTTPS is required for accessing storage account resources.
-
--   Authentication request data is logged and monitored.
-
--   Data in Blob storage is encrypted at rest.
-
-## ANALYZE
-
-### Machine Learning
-
-
--   [Logging is
-    enabled](/azure/machine-learning/studio/web-services-logging)
-    for Machine Learning web services.
-- using [Machine Learning](/azure/machine-learning/preview/experimentation-service-configuration) workbench requires the development of experiments, that provides the ability to predict to a solution set. [Integrating the workbench](/azure/machine-learning/preview/using-git-ml-project) can help streamline management of experiments.
-
-## SECURITY
-
-### Azure Security Center
-- [Azure Security Center](https://azure.microsoft.com/services/security-center/) provides a centralized view of the security state of all your Azure resources. At a glance, you can verify that the appropriate security controls are in place and configured correctly, and you can quickly identify any resources that require attention.
-
-- [Azure Advisor](/azure/advisor/advisor-overview) is a personalized cloud consultant that helps you follow best practices to optimize your Azure deployments. It analyzes your resource configuration and usage telemetry and then recommends solutions that can help you improve the cost effectiveness, performance, high availability, and security of your Azure resources.
-
-### Application Insights
-- [Application Insights](/azure/application-insights/app-insights-overview) is an extensible Application Performance Management (APM) service for web developers on multiple platforms. Use it to monitor your live web application. It detects performance anomalies. It includes powerful analytics tools to help you diagnose issues and to understand what users actually do with your app. It's designed to help you continuously improve performance and usability.
-
-### Azure Alerts
-- [Alerts offer a method of monitoring Azure services and allow you to configure conditions over data. Alerts also provide notifications when an alert condition matches the monitoring data.
-
-### Operations Management Suite (OMS)
-[Operations Management Suite (also known as OMS)](/azure/operations-management-suite/operations-management-suite-overview) is a collection of management services.
-
--   Workspace is enabled for Security Center
-
--   Workspace is enabled for Workload Monitoring
-
--   Workload Monitoring is enabled for:
-
-    -   Identity and Access
-
-    -   Security and Audit
-
-    -   Azure SQL DB Analytics
-
-    -   [Azure WebApp
-        Analytics](/azure/log-analytics/log-analytics-azure-web-apps-analytics)
-        Solution
-
-    -   Key Vault Analytics
-
-    -   Change Tracking
-
--   [Application Insights Connector
-    (Preview)](/azure/log-analytics/log-analytics-app-insights-connector)
-    is enabled
-
--   [Activity log
-    analytics](/azure/log-analytics/log-analytics-activity)
-    is enabled
+**Azure SQL Database**
+The Azure SQL Database instance uses the following database security measures:
+-	[AD Authentication and Authorization](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-aad-authentication) enables identity management of database users and other Microsoft services in one central location.
+-	[SQL database auditing](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-auditing-get-started) tracks database events and writes them to an audit log in an Azure storage account.
+-	SQL Database is configured to use [Transparent Data Encryption (TDE)](https://docs.microsoft.com/en-us/sql/relational-databases/security/encryption/transparent-data-encryption-azure-sql), which performs real-time encryption and decryption of data and log files to protect information at rest. TDE provides assurance that stored data has not been subject to unauthorized access.
+-	[Firewall rules](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-firewall-configure) prevent all access to database servers until proper permissions are granted. The firewall grants access to databases based on the originating IP address of each request.
+-	[SQL Threat Detection](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-threat-detection-get-started) enables the detection and response to potential threats as they occur by providing security alerts for suspicious database activities, potential vulnerabilities, SQL injection attacks, and anomalous database access patterns.
+-	[Always Encrypted columns](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-always-encrypted-azure-key-vault) ensure that sensitive data never appears as plaintext inside the database system. After enabling data encryption, only client applications or app servers with access to the keys can access plaintext data.
+-	[SQL Database Dynamic Data Masking (DDM)](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-dynamic-data-masking-get-started) limits sensitive data exposure by masking the data to non-privileged users or applications. DDM allows the database administrator to select a particular table-column that contains sensitive data, add a mask to it (there are a few available built-in masks that can be applied, as well as a customizable mask), and designate which database users are privileged and should have access to the real data. Once configured, any query on that table or column will contain masked results, except for queries run by privileged users. DDM can be done after the reference architecture deploys. **Note: Customers will need to adjust DDM settings to adhere to their database schema.**
+
+**Azure Security Center**
+[Azure Security Center](https://docs.microsoft.com/en-us/azure/security-center/security-center-intro) provides unified security management and advanced threat protection across hybrid cloud workloads. With Security Center, you can apply security policies across your workloads, limit your exposure to threats, and detect and respond to attacks.
+
+### **Report**
+**Keep required documentation and manage data requests and breach notifications.**
+
+#### Logging and Auditing
+
+[Operations Management Suite (OMS)](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) provides extensive logging of system and user activity, as well as system health. The OMS [Log Analytics](https://azure.microsoft.com/services/log-analytics/) solution collects and analyzes data generated by resources in Azure and on-premises environments.
+- **Activity Logs**: [Activity logs](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitoring-overview-activity-logs) provide insight into operations performed on resources in a subscription.
+- **Diagnostic Logs**: [Diagnostic logs](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitoring-overview-of-diagnostic-logs) include all logs emitted by every resource. These logs include Windows event system logs and Azure Blob storage, tables, and queue logs.
+- **Firewall Logs**: The Application Gateway provides full diagnostic and access logs. Firewall logs are available for WAF-enabled Application Gateway resources.
+- **Log Archiving**: All diagnostic logs write to a centralized and encrypted Azure storage account for archival with a defined retention period of 2 days. These logs connect to Azure Log Analytics for processing, storing, and dashboard reporting.
+
+Additionally, the following OMS solutions are included as a part of this architecture:
+-	[AD Assessment](https://docs.microsoft.com/azure/log-analytics/log-analytics-ad-assessment): The Active Directory Health Check solution assesses the risk and health of server environments on a regular interval and provides a prioritized list of recommendations specific to the deployed server infrastructure.
+-	[Antimalware Assessment](https://docs.microsoft.com/azure/log-analytics/log-analytics-malware): The Antimalware solution reports on malware, threats, and protection status.
+-	[Azure Automation](https://docs.microsoft.com/azure/automation/automation-hybrid-runbook-worker): The Azure Automation solution stores, runs, and manages runbooks.
+-	[Security and Audit](https://docs.microsoft.com/azure/operations-management-suite/oms-security-getting-started): The Security and Audit dashboard provides a high-level insight into the security state of resources by providing metrics on security domains, notable issues, detections, threat intelligence, and common security queries.
+-	[SQL Assessment](https://docs.microsoft.com/azure/log-analytics/log-analytics-sql-assessment): The SQL Health Check solution assesses the risk and health of server environments on a regular interval and provides customers with a prioritized list of recommendations specific to the deployed server infrastructure.
+-	[Update Management](https://docs.microsoft.com/azure/operations-management-suite/oms-solution-update-management): The Update Management solution allows customer management of operating system security updates, including a status of available updates and the process of installing required updates.
+-	[Agent Health](https://docs.microsoft.com/azure/operations-management-suite/oms-solution-agenthealth): The Agent Health solution reports how many agents are deployed and their geographic distribution, as well as how many agents which are unresponsive and the number of agents which are submitting operational data.
+-	[Azure Activity Logs](https://docs.microsoft.com/azure/log-analytics/log-analytics-activity): The Activity Log Analytics solution assists with analysis of the Azure activity logs across all Azure subscriptions for a customer.
+-	[Change Tracking](https://docs.microsoft.com/azure/log-analytics/log-analytics-activity): The Change Tracking solution allows customers to easily identify changes in the environment.
+
+
+**Application Insights**
+[Application Insights](https://docs.microsoft.com/en-us/azure/application-insights/) is an extensible Application Performance Management (APM) service for web developers building and managing apps on multiple platforms. Learn how to detect & diagnose issues and understand usage for your web apps and services using our quickstarts, tutorials, and reference documentation.
+
+## Threat Model
+
+The data flow diagram (DFD) for this reference architecture is available for [download](https://aka.ms/blueprintdwthreatmodel) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
+
+## Compliance Documentation
+
+## Guidance and Recommendations
+### ExpressRoute and VPN
+[ExpressRoute](https://docs.microsoft.com/en-us/azure/expressroute/expressroute-introduction) or a secure VPN tunnel needs to be configured to securely establish a connection to the resources deployed as a part of this data warehouse reference architecture. As ExpressRoute connections do not go over the Internet, these connections offer more reliability, faster speeds, lower latencies, and higher security than typical connections over the Internet. By appropriately setting up ExpressRoute or a VPN, customers can add a layer of protection for data in transit.
+
+### Extract-Transform-Load (ETL) Process
+[PolyBase](https://docs.microsoft.com/en-us/sql/relational-databases/polybase/polybase-guide) can load data into Azure SQL Data Warehouse without the need for a separate ETL or import tool. PolyBase allows access to data through T-SQL queries. Microsoft's business intelligence and analysis stack, as well as third-party tools compatible with SQL Server, can be used with PolyBase.
+
+### Azure Active Directory Setup
+[Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/active-directory-whatis) is essential to managing the deployment and provisioning access to personnel interacting with the environment. An existing Windows Server Active Directory can be integrated with AAD in [four clicks](https://docs.microsoft.com/en-us/azure/active-directory/connect/active-directory-aadconnect-get-started-express). Customers can also tie the deployed Active Directory infrastructure (domain controllers) to an existing AAD by making the deployed Active Directory infrastructure a subdomain of an AAD forest.
+## Disclaimer
+
+ - This document is for informational purposes only. MICROSOFT MAKES NO WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY, AS TO THE INFORMATION IN THIS DOCUMENT. This document is provided "as-is." Information and views expressed in this document, including URL and other Internet website references, may change without notice. Customers reading this document bear the risk of using it.
+ - This document does not provide customers with any legal rights to any intellectual property in any Microsoft product or solutions.
+ - Customers may copy and use this document for internal reference purposes.
+ - Certain recommendations in this document may result in increased data, network, or compute resource usage in Azure, and may increase a customer's Azure license or subscription costs.
+ - This architecture is intended to serve as a foundation for customers to adjust to their specific requirements and should not be used as-is in a production environment.
+ - This document is developed as a reference and should not be used to define all means by which a customer can meet specific compliance requirements and regulations. Customers should seek legal support from their organization on approved customer implementations.
