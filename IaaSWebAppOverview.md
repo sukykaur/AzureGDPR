@@ -186,9 +186,9 @@ The following management solutions are pre-installed as part of this solution:
 
 ## Compliance Documentation
 
-The [Azure Security and Compliance Blueprint - FedRAMP High Customer Responsibility Matrix](https://aka.ms/blueprinthighcrm) lists all security controls required by the FedRAMP High baseline. The matrix denotes, for each control (or control subpart), whether implementation responsibly for the control is the responsibility of Microsoft, the customer, or shared between the two.
+The [Azure Security and Compliance Blueprint - GDPR Customer Responsibility Matrix](https://aka.ms/blueprinthighcrm) lists controller and processor responsibilities for all GDPR articles. Please note that for Azure services, a customer is usually the controller and Microsoft acts as the processor.
 
-The [control implementation matrix](https://aka.ms/blueprintwacim) lists all security controls required by the FedRAMP High baseline. The matrix denotes, for each control (or control subpart) that is designated a customer-responsibly in the customer responsibilities matrix, 1) if the blueprint automation implements the control, and 2) a description of how the implementation aligns with the control requirement(s). This content is also available [here](fedramp-controls-overview.md).
+The [Azure Security and Compliance Blueprint - GDPR IaaS WebApp Implementation Matrix](https://aka.ms/blueprintwacim) provides information on which GDPR articles are addressed by the IaaS WebApp architecture, including detailed descriptions of how the implementation meets the requirements of each covered article.
 
 ## Deploy the Solution
 
