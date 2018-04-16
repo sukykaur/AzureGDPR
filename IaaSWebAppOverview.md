@@ -37,10 +37,7 @@ This solution uses the following Azure services. Details of the deployment archi
 * Azure Key Vault
 * Azure Active Directory (AAD)
 * Azure Resource Manager
-* Azure Log Analytics
-	- (1) Log Analytics workspace
-* Azure Automation
-	- (1) Automation account
+* Operations Management Suite
 
 ## Deployment Architecture
 
