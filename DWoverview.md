@@ -174,7 +174,7 @@ For users of Azure SQL Database, DDM can automatically discover potentially sens
 ### Report
 The goal of the fourth and final step is to retain the required documentation and to manage data subject requests and breach notifications.
 
-A key topic of the GDPR is data transfers in and out of the European Union (EU). This reference architecture can be deployed to a specific region (e.g., West Europe) to specify where data will be stored. 
+A key topic of the GDPR is data transfers in and out of the European Union (EU). This reference architecture can be deployed to a specific region (e.g., West Europe) to specify where data will be stored.
 
 #### Logging and Auditing
 
@@ -209,9 +209,7 @@ A secure VPN tunnel or [ExpressRoute](https://docs.microsoft.com/azure/expressro
 
 By implementing a secure VPN tunnel with Azure you can create a virtual private connection between your on-premises network and an Azure Virtual Network. This connection takes place over the Internet and allows you to securely “tunnel” information inside an encrypted link between your network and Azure. Site-to-Site VPN is a secure, mature technology that has been deployed by enterprises of all sizes for decades. The [IPsec tunnel mode](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc786385(v=ws.10)) is used in this option as an encryption mechanism.
 
-Azure ExpressRoute is a dedicated WAN link between Azure and an on-premises location or an Exchange hosting provider. As ExpressRoute connections do not go over the Internet, these connections offer more reliability, faster speeds, lower latencies, and higher security than typical connections over the Internet. Furthermore, because this is a direct connection of customer's telecommunication provider, the data does not travel over the Internet and therefore is not exposed to it.
-
-Best practices for implementing a secure hybrid network that extends an on-premises network to Azure is [available](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/dmz/secure-vnet-hybrid).
+Azure ExpressRoute is a dedicated WAN link between Azure and an on-premises location or an Exchange hosting provider. As ExpressRoute connections do not go over the Internet, these connections offer more reliability, faster speeds, lower latencies, and higher security than typical connections over the Internet. Furthermore, because this is a direct connection of customer's telecommunication provider, the data does not travel over the Internet and therefore is not exposed to it. Best practices for implementing a secure hybrid network that extends an on-premises network to Azure are [available](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/dmz/secure-vnet-hybrid).
 
 ### Extract-Transform-Load (ETL) Process
 [PolyBase](https://docs.microsoft.com/sql/relational-databases/polybase/polybase-guide) can load data into Azure SQL Data Warehouse without the need for a separate ETL or import tool. PolyBase allows access to data through T-SQL queries. Microsoft's business intelligence and analysis stack, as well as third-party tools compatible with SQL Server, can be used with PolyBase.
