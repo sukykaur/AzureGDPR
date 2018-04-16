@@ -6,17 +6,15 @@ The [Federal Risk and Authorization Management Program (FedRAMP)](https://www.fe
 
 This architecture is intended to serve as a foundation for customers to adjust to their specific requirements and should not be used as-is in a production environment. Deploying an application into this environment without modification is not sufficient to completely meet the requirements of the FedRAMP High baseline. Please note the following:
 - This architecture provides a baseline to help customers use Azure in a FedRAMP-compliant manner.
-- Customers are responsible for conducting appropriate security and compliance assessment of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation. 
+- Customers are responsible for conducting appropriate security and compliance assessment of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
 For a quick overview of how this solution works, watch this [video](https://aka.ms/fedrampblueprintvideo) explaining and demonstrating its deployment.
 
 Click [here](https://aka.ms/fedrampblueprintrepo) for deployment instructions.
 
-## Solution components
-
 This Azure Security and Compliance Blueprint Automation automatically deploys an IaaS web application reference architecture with pre-configured security controls to help customers achieve compliance with FedRAMP requirements. The solution consists of Azure Resource Manager templates and PowerShell scripts that guide resource deployment and configuration. Accompanying [compliance documentation](#compliance-documentation) is provided, indicating security control inheritance from Azure and the deployed resources and configurations that align with NIST SP 800-53 security controls, thereby enabling organizations to fast-track compliance obligations.
 
-## Architecture diagram
+## Architecture Diagram and Components
 
 This solution deploys a reference architecture for an IaaS web application with a database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources.
 
@@ -58,9 +56,89 @@ This solution uses the following Azure services. Details of the deployment archi
 * **Azure Automation**
 	- (1) Automation account
 
-## Deployment architecture
+## Deployment Architecture
 
 The following section details the development and implementation elements.
+
+### Discover
+**Identify which personal data exists and where it resides.**
+
+### Manage
+**Govern how personal data is used and accessed.**
+
+#### Identity management
+
+The following technologies provide identity management capabilities in the Azure environment.
+- [Azure Active Directory (Azure AD)](https://azure.microsoft.com/services/active-directory/) is Microsoft's multi-tenant cloud-based directory and identity management service.
+- Authentication to a customer-deployed web application can be performed using Azure AD. For more information, see [Integrating applications with Azure Active Directory](https://docs.microsoft.com/azure/active-directory/develop/active-directory-integrating-applications).  
+- [Azure Role-Based Access Control (RBAC)](https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal) enables precisely focused access management for Azure. Subscription access is limited to the subscription administrator, and access to resources can be limited based on user role.
+- A deployed IaaS Active Directory instance provides identity management at the OS-level for deployed IaaS virtual machines.
+
+### Protect
+**Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.**
+
+#### Secrets management
+
+The solution uses Azure Key Vault to manage keys and secrets.
+
+- [Azure Key Vault](https://azure.microsoft.com/services/key-vault/) helps safeguard cryptographic keys and secrets used by cloud applications and services.
+- The solution is integrated with Azure Key Vault to manage IaaS virtual machine disk-encryption keys and secrets.
+
+#### Data in Transit
+Azure encrypts all communications to and from Azure datacenters by default. Additionally, all transactions to Azure Storage through the Azure Portal occur via HTTPS.
+
+#### Data at Rest
+
+The architecture protects data at rest by using several encryption measures.
+
+#### Azure Storage
+
+To meet data-at-rest encryption requirements, all storage accounts use [Storage Service Encryption](https://docs.microsoft.com/azure/storage/common/storage-service-encryption).
+
+#### SQL Database
+
+SQL Database is configured to use [Transparent Data Encryption (TDE)](https://docs.microsoft.com/sql/relational-databases/security/encryption/transparent-data-encryption), which performs real-time encryption and decryption of data and log files to protect information at rest. TDE provides assurance that stored data has not been subject to unauthorized access.
+
+#### Azure Disk Encryption
+
+Azure Disk Encryption is used to encrypted Windows IaaS virtual machine disks. [Azure Disk Encryption](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) leverages the BitLocker feature of Windows to provide volume encryption for OS and data disks. The solution is integrated with Azure Key Vault to help control and manage the disk-encryption keys.
+
+#### Availability of Compute Resources
+
+#### Web Tier
+
+The solution deploys web tier virtual machines in an [Availability Set](https://docs.microsoft.com/azure/virtual-machines/windows/tutorial-availability-sets). Availability sets ensure that the virtual machines are distributed across multiple isolated hardware clusters to improve availability.
+
+#### Database Tier
+
+The solution deploys database tier virtual machines in an Availability Set as an [AlwaysOn availability group](https://docs.microsoft.com/azure/virtual-machines/windows/sql/virtual-machines-windows-portal-sql-availability-group-overview). The Always On availability group feature provides for high-availability and disaster-recovery capabilities.
+
+#### Active Directory
+
+All virtual machines deployed by the solution are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. Active Directory virtual machines are deployed in an Availability Set.
+
+#### Security
+
+#### Malware protection
+
+[Microsoft Antimalware](https://docs.microsoft.com/azure/security/azure-security-antimalware) for Virtual Machines provides real-time protection capability that helps identify and remove viruses, spyware, and other malicious software, with configurable alerts when known malicious or unwanted software attempts to install or run on protected virtual machines.
+
+#### Patch management
+
+Windows virtual machines deployed by this Azure Security and Compliance Blueprint Automation are configured by default to receive automatic updates from Windows Update Service. This solution also deploys the Azure Automation solution through which Update Deployments can be created to deploy patches to Windows servers when needed.
+
+### Report
+**Keep required documentation and manage data requests and breach notifications.**
+
+### Logging and auditing
+
+[Log Analytics](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) provides extensive logging of system and user activity as well as system health.
+
+- **Activity Logs:**  [Activity logs](https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitoring-overview-activity-logs) provide insight into the operations that were performed on resources in your subscription.
+- **Diagnostic Logs:**  [Diagnostic logs](https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitoring-overview-of-diagnostic-logs) are all logs emitted by every resource. These logs include Windows event system logs, Azure storage logs, Key Vault audit logs, and Application Gateway access and firewall logs.
+- **Log Archiving:**  Azure activity logs and diagnostic logs can be connected to Azure Log Analytics for processing, storing, and dashboarding. Retention is user-configurable up to 730 day to meet organization-specific retention requirements.
+
+----------------------------------------------------
 
 ### Network segmentation and security
 
@@ -78,7 +156,7 @@ The architecture reduces the risk of security vulnerabilities using an Applicati
 
 The architecture defines a private virtual network with an address space of 10.200.0.0/16.
 
-#### Network security groups
+#### Network Security Groups
 
 This solution deploys resources in an architecture with a separate web subnet, database subnet, Active Directory subnet, and management subnet inside of a virtual network. Subnets are logically separated by network security group rules applied to the individual subnets to restrict traffic between subnets to only that necessary for system and management functionality.
 
@@ -95,71 +173,11 @@ Each of the subnets has a dedicated network security group (NSG):
 
 Each subnet is associated with its corresponding NSG.
 
-### Data at rest
-
-The architecture protects data at rest by using several encryption measures.
-
-#### Azure Storage
-
-To meet data-at-rest encryption requirements, all storage accounts use [Storage Service Encryption](https://docs.microsoft.com/azure/storage/common/storage-service-encryption).
-
-#### SQL Database
-
-SQL Database is configured to use [Transparent Data Encryption (TDE)](https://docs.microsoft.com/sql/relational-databases/security/encryption/transparent-data-encryption), which performs real-time encryption and decryption of data and log files to protect information at rest. TDE provides assurance that stored data has not been subject to unauthorized access. 
-
-#### Azure Disk Encryption
-
-Azure Disk Encryption is used to encrypted Windows IaaS virtual machine disks. [Azure Disk Encryption](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) leverages the BitLocker feature of Windows to provide volume encryption for OS and data disks. The solution is integrated with Azure Key Vault to help control and manage the disk-encryption keys.
-
-### Logging and auditing
-
-[Log Analytics](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) provides extensive logging of system and user activity as well as system health. 
-
-- **Activity Logs:**  [Activity logs](https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitoring-overview-activity-logs) provide insight into the operations that were performed on resources in your subscription.
-- **Diagnostic Logs:**  [Diagnostic logs](https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitoring-overview-of-diagnostic-logs) are all logs emitted by every resource. These logs include Windows event system logs, Azure storage logs, Key Vault audit logs, and Application Gateway access and firewall logs.
-- **Log Archiving:**  Azure activity logs and diagnostic logs can be connected to Azure Log Analytics for processing, storing, and dashboarding. Retention is user-configurable up to 730 day to meet organization-specific retention requirements.
-
-### Secrets management
-
-The solution uses Azure Key Vault to manage keys and secrets.
-
-- [Azure Key Vault](https://azure.microsoft.com/services/key-vault/) helps safeguard cryptographic keys and secrets used by cloud applications and services. 
-- The solution is integrated with Azure Key Vault to manage IaaS virtual machine disk-encryption keys and secrets.
-
-### Identity management
-
-The following technologies provide identity management capabilities in the Azure environment.
-- [Azure Active Directory (Azure AD)](https://azure.microsoft.com/services/active-directory/) is Microsoft's multi-tenant cloud-based directory and identity management service.
-- Authentication to a customer-deployed web application can be performed using Azure AD. For more information, see [Integrating applications with Azure Active Directory](https://docs.microsoft.com/azure/active-directory/develop/active-directory-integrating-applications).  
-- [Azure Role-based Access Control (RBAC)](https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal) enables precisely focused access management for Azure. Subscription access is limited to the subscription administrator, and access to resources can be limited based on user role.
-- A deployed IaaS Active Directory instance provides identity management at the OS-level for deployed IaaS virtual machines.
-   
-### Compute resources
-
-#### Web tier
-
-The solution deploys web tier virtual machines in an [Availability Set](https://docs.microsoft.com/azure/virtual-machines/windows/tutorial-availability-sets). Availability sets ensure that the virtual machines are distributed across multiple isolated hardware clusters to improve availability.
-
-#### Database tier
-
-The solution deploys database tier virtual machines in an Availability Set as an [AlwaysOn availability group](https://docs.microsoft.com/azure/virtual-machines/windows/sql/virtual-machines-windows-portal-sql-availability-group-overview). The Always On availability group feature provides for high-availability and disaster-recovery capabilities. 
-
-#### Active Directory
-
-All virtual machines deployed by the solution are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. Active Directory virtual machines are deployed in an Availability Set.
-
-
 #### Jumpbox (bastion host)
 
-A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources. The NSG associated with the management subnet where the jumpbox virtual machine is located allows connections only on TCP port 3389 for RDP. 
+A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources. The NSG associated with the management subnet where the jumpbox virtual machine is located allows connections only on TCP port 3389 for RDP.
 
-### Malware protection
 
-[Microsoft Antimalware](https://docs.microsoft.com/azure/security/azure-security-antimalware) for Virtual Machines provides real-time protection capability that helps identify and remove viruses, spyware, and other malicious software, with configurable alerts when known malicious or unwanted software attempts to install or run on protected virtual machines.
-
-### Patch management
-
-Windows virtual machines deployed by this Azure Security and Compliance Blueprint Automation are configured by default to receive automatic updates from Windows Update Service. This solution also deploys the Azure Automation solution through which Update Deployments can be created to deploy patches to Windows servers when needed.
 
 ### Operations management
 
@@ -180,17 +198,13 @@ The following management solutions are pre-installed as part of this solution:
 - [Azure Activity Logs](https://docs.microsoft.com/azure/log-analytics/log-analytics-activity)
 - [Change Tracking](https://docs.microsoft.com/azure/log-analytics/log-analytics-activity)
 
-## Compliance documentation
+## Compliance Documentation
 
-### Customer responsibility matrix
+The [Azure Security and Compliance Blueprint - FedRAMP High Customer Responsibility Matrix](https://aka.ms/blueprinthighcrm) lists all security controls required by the FedRAMP High baseline. The matrix denotes, for each control (or control subpart), whether implementation responsibly for the control is the responsibility of Microsoft, the customer, or shared between the two.
 
-The [customer responsibilities matrix](https://aka.ms/blueprinthighcrm) (Excel Workbook) lists all security controls required by the FedRAMP High baseline. The matrix denotes, for each control (or control subpart), whether implementation responsibly for the control is the responsibility of Microsoft, the customer, or shared between the two. 
+The [control implementation matrix](https://aka.ms/blueprintwacim) lists all security controls required by the FedRAMP High baseline. The matrix denotes, for each control (or control subpart) that is designated a customer-responsibly in the customer responsibilities matrix, 1) if the blueprint automation implements the control, and 2) a description of how the implementation aligns with the control requirement(s). This content is also available [here](fedramp-controls-overview.md).
 
-### Control implementation matrix
-
-The [control implementation matrix](https://aka.ms/blueprintwacim) (Excel Workbook) lists all security controls required by the FedRAMP High baseline. The matrix denotes, for each control (or control subpart) that is designated a customer-responsibly in the customer responsibilities matrix, 1) if the blueprint automation implements the control, and 2) a description of how the implementation aligns with the control requirement(s). This content is also available [here](fedramp-controls-overview.md).
-
-## Deploy the solution
+## Deploy the Solution
 
 This Azure Security and Compliance Blueprint Automation is comprised of JSON configuration files and PowerShell scripts that are handled by Azure Resource Manager's API service to deploy resources within Azure. Detailed deployment instructions are available [here](https://aka.ms/fedrampblueprintrepo). ***Note: This solution deploys to Azure Government.***
 
