@@ -1,47 +1,45 @@
-# Azure Security and Compliance Blueprint - FedRAMP Web Applications Automation
+# Azure Security and Compliance Blueprint - Web Application for GDPR
 
 ## Overview
 
 ## Architecture Diagram and Components
 
-This solution deploys a reference architecture for an IaaS web application with a database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources.
+This solution deploys a reference architecture for an GDPR web application with a database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources.
 
 ![alt text](images/fedramp-architectural-diagram.png?raw=true "Azure Security and Compliance Blueprint - FedRAMP Web Applications Automation")
 
 This solution uses the following Azure services. Details of the deployment architecture are located in the [deployment architecture](#deployment-architecture) section.
 
-* **Azure Virtual Machines**
+* Azure Virtual Machines
 	- (1) Management/bastion (Windows Server 2016 Datacenter)
 	- (2) Active Directory domain controller (Windows Server 2016 Datacenter)
 	- (2) SQL Server cluster node (SQL Server 2016 on Windows Server 2012 R2)
 	- (1) SQL Server witness (Windows Server 2016 Datacenter)
 	- (2) Web/IIS (Windows Server 2016 Datacenter)
-* **Availability Sets**
+* Availability Sets
 	- (1) Active Directory domain controllers
 	- (1) SQL cluster nodes and witness
 	- (1) Web/IIS
-* **Azure Virtual Network**
+* Azure Virtual Network
 	- (1) /16 virtual networks
 	- (5) /24 subnets
 	- DNS settings are set to both domain controllers
-* **Azure Load Balancer**
+* Azure Load Balancer
 	- (1) SQL load balancer
-* **Azure Application Gateway**
+* Azure Application Gateway
 	- (1) WAF Application Gateway enabled
  	  - Firewall Mode: Prevention
 	  - Rule set: OWASP 3.0
  	  - Listener: Port 443
-* **Azure Storage**
+* Azure Storage
 	- (7) Geo-redundant storage accounts
-* **Azure Backup**
-	- (1) Recovery Services vault
-* **Azure Key Vault**
-	- (1) Key Vault
-* **Azure Active Directory**
-* **Azure Resource Manager**
-* **Azure Log Analytics**
+* Recovery Services vault
+* Azure Key Vault
+* Azure Active Directory (AAD)
+* Azure Resource Manager
+* Azure Log Analytics
 	- (1) Log Analytics workspace
-* **Azure Automation**
+* Azure Automation
 	- (1) Automation account
 
 ## Deployment Architecture
@@ -118,7 +116,7 @@ Windows virtual machines deployed by this Azure Security and Compliance Blueprin
 ### Report
 **Keep required documentation and manage data requests and breach notifications.**
 
-### Logging and auditing
+### Logging and Auditing
 
 [Log Analytics](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) provides extensive logging of system and user activity as well as system health.
 
@@ -140,7 +138,7 @@ The architecture reduces the risk of security vulnerabilities using an Applicati
 - [Web application firewall](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-overview) (WAF mode)
 - [Prevention mode](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-portal) with OWASP 3.0 ruleset
 
-#### Virtual network
+#### Virtual Network
 
 The architecture defines a private virtual network with an address space of 10.200.0.0/16.
 
