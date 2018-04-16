@@ -2,18 +2,6 @@
 
 ## Overview
 
-The [Federal Risk and Authorization Management Program (FedRAMP)](https://www.fedramp.gov), is a U.S. government-wide program that provides a standardized approach to security assessment, authorization, and continuous monitoring for cloud products and services. This Azure Security and Compliance Blueprint Automation provides guidance for the deployment of a FedRAMP-compliant infrastructure as a Service (IaaS) environment suitable for a simple Internet-facing web application. This solution automates deployment and configuration of Azure resources for a common reference architecture, demonstrating ways in which customers can meet specific security and compliance requirements and serves as a foundation for customers to build and configure their own solutions on Azure. The solution implements a subset of controls from the FedRAMP High baseline, based on NIST SP 800-53. For more information about FedRAMP High requirements and this solution, see [FedRAMP High Requirements - High-Level Overview](fedramp-controls-overview.md). ***Note: This solution deploys to Azure Government.***
-
-This architecture is intended to serve as a foundation for customers to adjust to their specific requirements and should not be used as-is in a production environment. Deploying an application into this environment without modification is not sufficient to completely meet the requirements of the FedRAMP High baseline. Please note the following:
-- This architecture provides a baseline to help customers use Azure in a FedRAMP-compliant manner.
-- Customers are responsible for conducting appropriate security and compliance assessment of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
-
-For a quick overview of how this solution works, watch this [video](https://aka.ms/fedrampblueprintvideo) explaining and demonstrating its deployment.
-
-Click [here](https://aka.ms/fedrampblueprintrepo) for deployment instructions.
-
-This Azure Security and Compliance Blueprint Automation automatically deploys an IaaS web application reference architecture with pre-configured security controls to help customers achieve compliance with FedRAMP requirements. The solution consists of Azure Resource Manager templates and PowerShell scripts that guide resource deployment and configuration. Accompanying [compliance documentation](#compliance-documentation) is provided, indicating security control inheritance from Azure and the deployed resources and configurations that align with NIST SP 800-53 security controls, thereby enabling organizations to fast-track compliance obligations.
-
 ## Architecture Diagram and Components
 
 This solution deploys a reference architecture for an IaaS web application with a database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources.
