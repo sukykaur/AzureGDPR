@@ -1,7 +1,7 @@
 # Azure Security and Compliance Blueprint - Web Application for GDPR
 
 ## Overview
-
+*add in DW intro + automation blurb*
 ## Architecture Diagram and Components
 
 This solution deploys a reference architecture for an GDPR web application with a database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources.
@@ -53,7 +53,7 @@ A critical step to addressing GDPR requirements is to identify all personal data
 ### Manage
 The goal of the second step is to govern how personal data is used and accessed within the organization.
 
-#### Identity Management
+#### *Identity Management*
 The following technologies provide capabilities to manage access to personal data in the Azure environment:
 - [Azure Active Directory (Azure AD)](https://azure.microsoft.com/services/active-directory/) is Microsoft's multi-tenant cloud-based directory and identity management service.
 - Authentication to a customer-deployed web application can be performed using Azure AD. For more information, see [Integrating applications with Azure Active Directory](https://docs.microsoft.com/azure/active-directory/develop/active-directory-integrating-applications).  
@@ -62,6 +62,35 @@ The following technologies provide capabilities to manage access to personal dat
 
 ### Protect
 The goal of the third step is to establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
+
+#### Application Gateway
+
+The architecture reduces the risk of security vulnerabilities using an Application Gateway with web application firewall (WAF), and the OWASP ruleset enabled. Additional capabilities include:
+
+- [End-to-End-SSL](https://docs.microsoft.com/azure/application-gateway/application-gateway-end-to-end-ssl-powershell)
+- Enable [SSL Offload](https://docs.microsoft.com/azure/application-gateway/application-gateway-ssl-portal)
+- Disable [TLS v1.0 and v1.1](https://docs.microsoft.com/azure/application-gateway/application-gateway-end-to-end-ssl-powershell)
+- [Web application firewall](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-overview) (WAF mode)
+- [Prevention mode](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-portal) with OWASP 3.0 ruleset
+
+#### Virtual Network
+
+The architecture defines a private virtual network with an address space of 10.200.0.0/16.
+
+**Network Security Groups**: This solution deploys resources in an architecture with a separate web subnet, database subnet, Active Directory subnet, and management subnet inside of a virtual network. Subnets are logically separated by network security group rules applied to the individual subnets to restrict traffic between subnets to only that necessary for system and management functionality.
+
+See the configuration for [Network Security Groups](https://github.com/Azure/fedramp-iaas-webapp/blob/master/nestedtemplates/virtualNetworkNSG.json) deployed with this solution. Organizations can configure Network Security groups by editing the file above using [this documentation](https://docs.microsoft.com/azure/virtual-network/virtual-networks-nsg) as a guide.
+
+Each of the subnets has a dedicated network security group (NSG):
+- 1 NSG for Application Gateway (LBNSG)
+- 1 NSG for Jumpbox (MGTNSG)
+- 1 NSG for Primary and Backup Domain Controllers (ADNSG)
+- 1 NSG for SQL Servers and File Share Witness (SQLNSG)
+- 1 NSG for Web Tier (WEBNSG)
+
+**Subnets**: Each subnet is associated with its corresponding NSG.
+
+**Bastion Host**: A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources. The NSG associated with the management subnet where the jumpbox virtual machine is located allows connections only on TCP port 3389 for RDP.
 
 #### Secrets Management
 The solution uses [Azure Key Vault](https://azure.microsoft.com/services/key-vault/) to manage keys and secrets.
@@ -111,43 +140,6 @@ A key topic of the GDPR is data transfers in and out of the European Union (EU).
 ----------------------------------------------------
 
 ### Network segmentation and security
-
-#### Application Gateway
-
-The architecture reduces the risk of security vulnerabilities using an Application Gateway with web application firewall (WAF), and the OWASP ruleset enabled. Additional capabilities include:
-
-- [End-to-End-SSL](https://docs.microsoft.com/azure/application-gateway/application-gateway-end-to-end-ssl-powershell)
-- Enable [SSL Offload](https://docs.microsoft.com/azure/application-gateway/application-gateway-ssl-portal)
-- Disable [TLS v1.0 and v1.1](https://docs.microsoft.com/azure/application-gateway/application-gateway-end-to-end-ssl-powershell)
-- [Web application firewall](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-overview) (WAF mode)
-- [Prevention mode](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-portal) with OWASP 3.0 ruleset
-
-#### Virtual Network
-
-The architecture defines a private virtual network with an address space of 10.200.0.0/16.
-
-#### Network Security Groups
-
-This solution deploys resources in an architecture with a separate web subnet, database subnet, Active Directory subnet, and management subnet inside of a virtual network. Subnets are logically separated by network security group rules applied to the individual subnets to restrict traffic between subnets to only that necessary for system and management functionality.
-
-See the configuration for [Network Security Groups](https://github.com/Azure/fedramp-iaas-webapp/blob/master/nestedtemplates/virtualNetworkNSG.json) deployed with this solution. Organizations can configure Network Security groups by editing the file above using [this documentation](https://docs.microsoft.com/azure/virtual-network/virtual-networks-nsg) as a guide.
-
-Each of the subnets has a dedicated network security group (NSG):
-- 1 NSG for Application Gateway (LBNSG)
-- 1 NSG for Jumpbox (MGTNSG)
-- 1 NSG for Primary and Backup Domain Controllers (ADNSG)
-- 1 NSG for SQL Servers and File Share Witness (SQLNSG)
-- 1 NSG for Web Tier (WEBNSG)
-
-#### Subnets
-
-Each subnet is associated with its corresponding NSG.
-
-#### Jumpbox (bastion host)
-
-A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources. The NSG associated with the management subnet where the jumpbox virtual machine is located allows connections only on TCP port 3389 for RDP.
-
-
 
 ### Operations management
 
