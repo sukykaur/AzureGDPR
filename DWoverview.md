@@ -28,37 +28,23 @@ A virtual machine serves as a management bastion host, providing a secure connec
 
 This solution uses the following Azure services. Details of the deployment architecture are in the [Deployment Architecture](#deployment-architecture) section.
 
-Azure Virtual Machines
--	(1) Bastion Host
+-	Bastion Host
 -	(2) Active Directory domain controller
 -	(2) SQL Server Cluster Node
--	(1) SQL Server Witness
-
-Availability Sets
--	(1) Active Directory domain controllers
--	(1) SQL cluster nodes and witness
-
-Virtual Network
+-	SQL Server Witness
+-	Active Directory Domain Controllers Availability Set
+- SQL Cluster Nodes and Witness Availability Set
 -	(4) Subnets
 -	(4) Network Security Groups
-
-SQL Data Warehouse
-
-SQL Server Reporting Services
-
-Azure SQL Load Balancer
-
-Azure Active Directory
-
-Recovery Services Vault
-
-Azure Key Vault
-
-Operations Management Suite (OMS)
-
-Azure Data Catalog
-
-Azure Security Center
+- SQL Data Warehouse
+- SQL Server Reporting Services
+- Azure SQL Load Balancer
+- Azure Active Directory
+- Recovery Services Vault
+- Azure Key Vault
+- Operations Management Suite (OMS)
+- Azure Data Catalog
+- Azure Security Center
 
 ## Deployment Architecture
 Microsoft Azure services help customers in their preparation for meeting GDPR requirements. Microsoft has developed a four-step process that customers can follow on their journey to GDPR compliance:
