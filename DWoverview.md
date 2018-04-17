@@ -76,11 +76,13 @@ A critical step to addressing GDPR requirements is to identify all personal data
 
 This solution deploys an [SQL Data Warehouse](https://docs.microsoft.com/azure/sql-data-warehouse/sql-data-warehouse-overview-what-is), which is an Enterprise Data Warehouse (EDW) that leverages Massively Parallel Processing (MPP) to quickly run complex queries across petabytes of data, allowing users to efficiently identify personal data. Users can use simple polybase T-SQL queries to import big data into the SQL Data Warehouse and utilize the power of MPP to run high-performance analytics.
 
-Azure Active Directory (AAD) enables administrators to search for user data, and then edit data associated with a user account.
-Using SQL queries, Microsoft customers can correct inaccurate or incomplete data hosted in Azure SQL Database.
+The Azure Active Directory (AAD) deployed in this solution enables administrators to search for user data, and then edit data associated with a user account.
+Furthermore, by using SQL queries, Microsoft customers can correct inaccurate or incomplete data hosted in Azure SQL Database.
 
 ### Manage
 The goal of the second step is to govern how personal data is used and accessed within the organization.
+
+Azure enables customers to export their data at any time, without seeking approval from Microsoft. For example, customers can export a virtual machine (VM) in a virtual hard disk (VHD) and AAD enables customers to export data associated with AAD accounts in a .csv file. Using SQL queries, Microsoft customers can identify and then export personal data hosted in Azure SQL Database. The [Extended Properties](https://docs.microsoft.com/sql/relational-databases/system-stored-procedures/sp-addextendedproperty-transact-sql) feature can be used to discontinue the processing of data subjects, as it allows users to add custom properties to database objects and tag data as "Discontinued" to support application logic to prevent the processing of associated personal data. [Row-Level Security](https://docs.microsoft.com/sql/relational-databases/security/row-level-security) enables users to define policies to restrict access to data to discontinue processing.
 
 #### Identity Management
 The following technologies provide capabilities to manage access to personal data in the Azure environment:
@@ -89,12 +91,13 @@ The following technologies provide capabilities to manage access to personal dat
 -	[Azure Role-based Access Control (RBAC)](https://docs.microsoft.com/azure/active-directory/role-based-access-control-configure) enables administrators to define fine-grained access permissions to grant only the amount of access that users need to perform their jobs. Instead of giving every user unrestricted permissions for Azure resources, administrators can allow only certain actions for accessing personal data. Subscription access is limited to the subscription administrator.
 - [AAD Privileged Identity Management](https://docs.microsoft.com/azure/active-directory/active-directory-privileged-identity-management-getting-started) enables customers to minimize the number of users who have access to certain information such as personal data.  Administrators can use AAD Privileged Identity Management to discover, restrict, and monitor privileged identities and their access to resources. This functionality can also be used to enforce on-demand, just-in-time administrative access when needed.
 
-Azure enables customers to export their data at any time, without seeking approval from Microsoft. AAD enables customers to export data associated with AAD accounts in a .csv file.
+### Protect
+The goal of the third step is to establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
 
-Using SQL queries, Microsoft customers can identify and then export personal data hosted in Azure SQL Database. The [Extended Properties](https://docs.microsoft.com/sql/relational-databases/system-stored-procedures/sp-addextendedproperty-transact-sql) feature can be used to discontinue the processing of data subjects, as it allows users to add custom properties to database objects and tag data as "Discontinued" to support application logic to prevent the processing of associated personal data. [Row-Level Security](https://docs.microsoft.com/sql/relational-databases/security/row-level-security) enables users to define policies to restrict access to data to discontinue processing.
+-	[AAD Identity Protection](https://docs.microsoft.com/azure/active-directory/active-directory-identityprotection) detects potential vulnerabilities affecting an organization’s identities, configures automated responses to detected suspicious actions related to an organization’s identities, and investigates suspicious incidents to take appropriate action to resolve them.
 
 #### Virtual Network
-This reference architecture defines a private virtual network with an address space of 10.0.0.0/16.
+This reference architecture defines a private virtual network with an address space of 10.0.0.0/16. Network Security Groups (NSGs), subnets, and a bastion host is used to limit the risk of unauthorized access, use, or disclosure of data.
 
 **Network Security Groups**: [NSGs](https://docs.microsoft.com/azure/virtual-network/virtual-networks-nsg) contain Access Control Lists (ACLs) that allow or deny traffic within a VNet. NSGs can be used to secure traffic at a subnet or individual VM level. The following NSGs exist:
   -	An NSG for the Data Tier (SQL Server Clusters, SQL Server Witness, and SQL Load Balancer)
@@ -107,11 +110,6 @@ Each of the NSGs have specific ports and protocols open so that the solution can
   -	OMS Log Analytics is connected to the [NSG's diagnostics](https://github.com/krnese/AzureDeploy/blob/master/AzureMgmt/AzureMonitor/nsgWithDiagnostics.json)
 
 **Subnets**: Each subnet is associated with its corresponding NSG.
-
-### Protect
-The goal of the third step is to establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
-
--	[AAD Identity Protection](https://docs.microsoft.com/azure/active-directory/active-directory-identityprotection) detects potential vulnerabilities affecting an organization’s identities, configures automated responses to detected suspicious actions related to an organization’s identities, and investigates suspicious incidents to take appropriate action to resolve them.
 
 **Bastion Host**: The bastion host is the single point of entry that allows users to access the deployed resources in this environment. The bastion host provides a secure connection to deployed resources by only allowing remote traffic from public IP addresses on a safe list. To permit remote desktop (RDP) traffic, the source of the traffic needs to be defined in the Network Security Group (NSG).
 
@@ -134,7 +132,7 @@ The solution uses [Azure Key Vault](https://azure.microsoft.com/services/key-vau
 - Permitted cryptographic operations for keys are restricted to the ones required.
 
 #### Data in Transit
-Azure encrypts all communications to and from Azure datacenters by default. Additionally, all transactions to Azure Storage through the Azure Portal occur via HTTPS.
+Azure encrypts all communications to and from Azure datacenters by default. All SQL traffic in this reference architecture is encrypted with SSL through the inclusion of self-signed certificates. As a best practice, Azure recommends the use of a trusted certificate authority for enhanced security. Additionally, all transactions to Azure Storage through the Azure Portal occur via HTTPS.
 
 For the confidentiality, integrity, and availability of information that is exchanged, including personal data, customers will need to configure ExpressRoute or secure VPN tunnel to securely establish a connection to the resources deployed as a part of this data warehouse reference architecture. Further details on both options are in the [Guidance and Recommendations](#-guidance-and-recommendations) section below.
 
@@ -162,6 +160,9 @@ After the reference architecture deploys, customers can use [SQL Database Dynami
 For users of Azure SQL Database, DDM can automatically discover potentially sensitive data and suggest the appropriate masks to be applied. This can help with the identification of personal data qualifying for GDPR protection, and for reducing access such that it does not exit the database via unauthorized access. **Note: Customers will need to adjust DDM settings to adhere to their database schema.**
 
 #### Security
+
+**Azure Security Center**: Azure Security Center enables customers to monitor traffic, collect logs, and analyze these data sources for threats. For incidents in which Microsoft holds some or all of the responsibility to respond, Microsoft has established a detailed [Security Incident Response Management process specific to Azure](https://gallery.technet.microsoft.com/Azure-Security-Response-in-dd18c678).
+
 **Malware Protection**: [Microsoft Antimalware](https://docs.microsoft.com/azure/security/azure-security-antimalware) for Virtual Machines provides real-time protection capability that helps identify and remove viruses, spyware, and other malicious software, with configurable alerts when known malicious or unwanted software attempts to install or run on protected virtual machines.
 
 **Patch Management**: Windows virtual machines deployed as part of this reference architecture are configured by default to receive automatic updates from Windows Update Service. This solution also includes the OMS [Azure Automation](https://docs.microsoft.com/azure/automation/automation-intro) service through which updated deployments can be created to patch virtual machines when needed.
