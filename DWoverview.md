@@ -14,7 +14,7 @@ This reference architecture, associated control implementation guides, and threa
 - Customers are responsible for conducting appropriate security and compliance assessments of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
 ## Architecture Diagram and Components
-This solution provides a data warehouse reference architecture which implements a high-performance and secure cloud data warehouse. There are two separate data tiers in this architecture: one where data is imported, stored, and staged within a clustered SQL environment, and another for the Azure SQL Data Warehouse where the data is loaded using an ETL tool (e.g. [PolyBase](https://docs.microsoft.com/azure/sql-data-warehouse/load-data-from-azure-blob-storage-using-polybase) T-SQL queries) for processing. Once data is stored in Azure SQL Data Warehouse, analytics can run at a massive scale.
+This solution provides a reference architecture which implements a high-performance and secure cloud data warehouse. There are two separate data tiers in this architecture: one where data is imported, stored, and staged within a clustered SQL environment, and another for the Azure SQL Data Warehouse where the data is loaded using an ETL tool (e.g. [PolyBase](https://docs.microsoft.com/azure/sql-data-warehouse/load-data-from-azure-blob-storage-using-polybase) T-SQL queries) for processing. Once data is stored in Azure SQL Data Warehouse, analytics can run at a massive scale.
 
 Microsoft Azure offers a variety of reporting and analytics services for the customer. This solution includes SQL Server Reporting Services (SSRS) for quick creation of reports from the Azure SQL Data Warehouse. All SQL traffic is encrypted with SSL through the inclusion of self-signed certificates. As a best practice, Azure recommends the use of a trusted certificate authority for enhanced security.
 
@@ -28,36 +28,37 @@ A virtual machine serves as a management bastion host, providing a secure connec
 
 This solution uses the following Azure services. Details of the deployment architecture are in the [Deployment Architecture](#deployment-architecture) section.
 
-- Azure Virtual Machines
-  -	(1) Bastion Host
-  -	(2) Active Directory domain controller
-  -	(2) SQL Server Cluster Node
-  -	(1) SQL Server Witness
+Azure Virtual Machines
+-	(1) Bastion Host
+-	(2) Active Directory domain controller
+-	(2) SQL Server Cluster Node
+-	(1) SQL Server Witness
 
+Availability Sets
+-	(1) Active Directory domain controllers
+-	(1) SQL cluster nodes and witness
 
-- Availability Sets
-  -	(1) Active Directory domain controllers
-  -	(1) SQL cluster nodes and witness
+Virtual Network
+-	(4) Subnets
+-	(4) Network Security Groups
 
+SQL Data Warehouse
 
-- Virtual Network
-  -	(4) Subnets
-  -	(4) Network Security Groups
+SQL Server Reporting Services
 
+Azure SQL Load Balancer
 
-- SQL Data Warehouse
+Azure Active Directory
 
-- SQL Server Reporting Services
+Recovery Services Vault
 
-- Azure SQL Load Balancer
+Azure Key Vault
 
-- Azure Active Directory
+Operations Management Suite (OMS)
 
-- Recovery Services Vault
+Azure Data Catalog
 
-- Azure Key Vault
-
-- Operations Management Suite (OMS)
+Azure Security Center
 
 ## Deployment Architecture
 Microsoft Azure services help customers in their preparation for meeting GDPR requirements. Microsoft has developed a four-step process that customers can follow on their journey to GDPR compliance:
@@ -161,7 +162,7 @@ For users of Azure SQL Database, DDM can automatically discover potentially sens
 
 #### Security
 
-**Azure Security Center**: Azure Security Center enables customers to monitor traffic, collect logs, and analyze these data sources for threats. For incidents in which Microsoft holds some or all of the responsibility to respond, Microsoft has established a detailed [Security Incident Response Management process specific to Azure](https://gallery.technet.microsoft.com/Azure-Security-Response-in-dd18c678).
+**Azure Security Center**: [Azure Security Center](https://docs.microsoft.com/en-us/azure/security-center/security-center-intro) enables customers to monitor traffic, collect logs, and analyze these data sources for threats. Additionally, Azure Security Center accesses existing configuration of Azure services to provide configuration and service recommendations to help improve security posture and protect personal data. For incidents in which Microsoft holds some or all of the responsibility to respond, Microsoft has established a detailed [Security Incident Response Management process specific to Azure](https://gallery.technet.microsoft.com/Azure-Security-Response-in-dd18c678).
 
 **Malware Protection**: [Microsoft Antimalware](https://docs.microsoft.com/azure/security/azure-security-antimalware) for Virtual Machines provides real-time protection capability that helps identify and remove viruses, spyware, and other malicious software, with configurable alerts when known malicious or unwanted software attempts to install or run on protected virtual machines.
 
@@ -175,9 +176,11 @@ For users of Azure SQL Database, DDM can automatically discover potentially sens
 ### Report
 The goal of the fourth and final step is to retain the required documentation and to manage data subject requests and breach notifications.
 
-A key topic of the GDPR is data transfers in and out of the European Union (EU). This reference architecture can be deployed to a specific region (e.g., West Europe) to specify where data will be stored.
+A key topic of the GDPR is data transfers in and out of the European Union (EU). This reference architecture can be deployed to a specific region or a national cloud to specify where data will be stored and to reduce the need for transfer of personal data outside of the EU. These choices include multiple regional choices within Europe as well as the German sovereign data storage region.
 
 #### Logging and Auditing
+
+Azure Security Center provides tools to enable customers to collect and review security logs from across Azure applications and services. Data collected by Azure Security Center is stored in a Log Analytics workspace described below.
 
 [Operations Management Suite (OMS)](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) provides extensive logging of system and user activity, as well as system health. The OMS [Log Analytics](https://azure.microsoft.com/services/log-analytics/) solution collects and analyzes data generated by resources in Azure and on-premises environments.
 - **Activity Logs**: [Activity logs](https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitoring-overview-activity-logs) provide insight into operations performed on resources in a subscription. Activity logs can help determine who initiated an operation, when it occurred, and what the status of the operation was.
