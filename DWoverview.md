@@ -2,7 +2,9 @@
 
 ## Overview
 The General Data Protection Regulation (GDPR) is fundamentally about protecting and enabling the privacy rights of individuals.
-The GDPR establishes strict global privacy requirements governing how organizations manage and protect personal data while respecting individual choice - no matter where data is sent, processed, or stored. Microsoft Azure services meet the stringent GDPR security requirements and Microsoft's contractual commitments guarantee that organizations can:
+The GDPR establishes strict global privacy requirements governing how organizations manage and protect personal data while respecting individual choice - no matter where data is sent, processed, or stored.
+
+Microsoft Azure services meet the stringent GDPR security requirements. Microsoft's [contractual terms](http://aka.ms/Online-Services-Terms) commit Microsoft to the requirements on processors in GDPR Article 28 and other Articles of GDPR. These commitments guarantee that organizations can:
 - Respond to requests to correct, amend or delete personal data.
 - Detect and report personal data breaches.
 - Demonstrate compliance with the GDPR.
