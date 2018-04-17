@@ -27,9 +27,9 @@ This solution uses the following Azure services. Details of the deployment archi
 - Azure SQL Load Balancer
 - Azure Application Gateway
 	- (1) WAF Application Gateway enabled
- 	  - Firewall Mode: Prevention
+		- Firewall Mode: Prevention
 		- Rule set: OWASP 3.0
- 	  - Listener: Port 443
+		- Listener: Port 443
 - Azure Storage
 	- (7) Geo-redundant storage accounts
 - Recovery Services vault
