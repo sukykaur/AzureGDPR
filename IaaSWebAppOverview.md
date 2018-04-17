@@ -24,8 +24,7 @@ This solution uses the following Azure services. Details of the deployment archi
 	- (1) /16 virtual networks
 	- (5) /24 subnets
 	- DNS settings are set to both domain controllers
-* Azure Load Balancer
-	- (1) SQL load balancer
+* Azure SQL Load Balancer
 * Azure Application Gateway
 	- (1) WAF Application Gateway enabled
  	  - Firewall Mode: Prevention
@@ -37,28 +36,32 @@ This solution uses the following Azure services. Details of the deployment archi
 * Azure Key Vault
 * Azure Active Directory (AAD)
 * Azure Resource Manager
-* Operations Management Suite
+* Operations Management Suite (OMS)
 
 ## Deployment Architecture
+Microsoft Azure services help customers in their preparation for meeting GDPR requirements. Microsoft has developed a four-step process that customers can follow on their journey to GDPR compliance:
+1. Discover: Identify which personal data exists and where it resides.
+2. Manage: Govern how personal data is used and accessed.
+3. Protect: Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
+4. Report: Keep required documentation and manage data requests and breach notifications.
 
-The following section details the development and implementation elements.
+The following section details this reference architecture's development and implementation elements as they relate to each step.
 
 ### Discover
-**Identify which personal data exists and where it resides.**
+A critical step to addressing GDPR requirements is to identify all personal data managed by the organization and where it resides.
 
 ### Manage
-**Govern how personal data is used and accessed.**
+The goal of the second step is to govern how personal data is used and accessed within the organization.
 
 #### Identity management
-
-The following technologies provide identity management capabilities in the Azure environment.
+The following technologies provide capabilities to manage access to personal data in the Azure environment:
 - [Azure Active Directory (Azure AD)](https://azure.microsoft.com/services/active-directory/) is Microsoft's multi-tenant cloud-based directory and identity management service.
 - Authentication to a customer-deployed web application can be performed using Azure AD. For more information, see [Integrating applications with Azure Active Directory](https://docs.microsoft.com/azure/active-directory/develop/active-directory-integrating-applications).  
 - [Azure Role-Based Access Control (RBAC)](https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal) enables precisely focused access management for Azure. Subscription access is limited to the subscription administrator, and access to resources can be limited based on user role.
 - A deployed IaaS Active Directory instance provides identity management at the OS-level for deployed IaaS virtual machines.
 
 ### Protect
-**Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.**
+The goal of the third step is to establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
 
 #### Secrets management
 
@@ -111,9 +114,11 @@ All virtual machines deployed by the solution are domain-joined, and Active Dire
 Windows virtual machines deployed by this Azure Security and Compliance Blueprint Automation are configured by default to receive automatic updates from Windows Update Service. This solution also deploys the Azure Automation solution through which Update Deployments can be created to deploy patches to Windows servers when needed.
 
 ### Report
-**Keep required documentation and manage data requests and breach notifications.**
+The goal of the fourth and final step is to retain the required documentation and to manage data subject requests and breach notifications.
 
-### Logging and Auditing
+A key topic of the GDPR is data transfers in and out of the European Union (EU). This reference architecture can be deployed to a specific region or a national cloud to specify where data will be stored and to reduce the need for transfer of personal data outside of the EU. These choices include multiple regional choices within Europe as well as the German sovereign data storage region.
+
+#### Logging and Auditing
 
 [Log Analytics](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) provides extensive logging of system and user activity as well as system health.
 
