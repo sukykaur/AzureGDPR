@@ -63,7 +63,7 @@ The following technologies provide capabilities to manage access to personal dat
 ### Protect
 The goal of the third step is to establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
 
-#### *Application Gateway*
+#### Application Gateway
 
 The architecture reduces the risk of security vulnerabilities using an Application Gateway with web application firewall (WAF), and the OWASP ruleset enabled. Additional capabilities include:
 
@@ -73,7 +73,7 @@ The architecture reduces the risk of security vulnerabilities using an Applicati
 - [Web application firewall](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-overview) (WAF mode)
 - [Prevention mode](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-portal) with OWASP 3.0 ruleset
 
-#### *Virtual Network*
+#### Virtual Network
 
 The architecture defines a private virtual network with an address space of 10.200.0.0/16.
 
