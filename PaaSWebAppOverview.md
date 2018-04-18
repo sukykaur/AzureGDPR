@@ -13,20 +13,19 @@ This solution uses the following Azure services. Details of the deployment archi
 - Azure Active Directory (AAD)
 - Azure Key Vault
 - Azure SQL Database
-- Azure Application Gateway
+- Application Gateway
 	- (1) WAF Application Gateway enabled
 		- Firewall Mode: Prevention
 		- Rule set: OWASP 3.0
 		- Listener: Port 443
-- Azure Virtual Network
+- Virtual Network
 - Network Security Groups
 - Azure DNS
 - Azure Storage
 - Operations Management Suite (OMS)
-- Log Analytics
 - Azure Monitor
 - Application Insights
-- Azure Data Catalog
+- Data Catalog
 - Azure Security Center
 - App Service Environment v2
 - Azure Load Balancer
@@ -43,6 +42,16 @@ Microsoft Azure services help customers in their preparation for meeting GDPR re
 4. Report: Keep required documentation and manage data requests and breach notifications.
 
 The following section details this reference architecture's development and implementation elements as they relate to each step.
+
+### Service to Add
+
+**Azure DNS**
+**App Service Environment v2**
+**Azure Load Balancer**
+**Azure Web App**
+**Azure Resource Manager**
+**Azure Automation**
+**Azure Automation Runbooks**
 
 ### Discover
 A critical step to addressing GDPR requirements is to identify all personal data managed by the organization and where it resides.
@@ -119,6 +128,9 @@ The architecture reduces the risk of security vulnerabilities using an Applicati
 - Disable [TLS v1.0 and v1.1](https://docs.microsoft.com/azure/application-gateway/application-gateway-end-to-end-ssl-powershell)
 - [Web application firewall](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-overview) (WAF mode)
 - [Prevention mode](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-portal) with OWASP 3.0 ruleset
+Enable [diagnostics logging](https://docs.microsoft.com/en-us/azure/application-gateway/application-gateway-diagnostics)
+[Custom health probes](https://docs.microsoft.com/en-us/azure/application-gateway/application-gateway-create-gateway-portal)
+[Azure Security Center](https://azure.microsoft.com/services/security-center) and [Azure Advisor](https://docs.microsoft.com/en-us/azure/advisor/advisor-security-recommendations) provide additional protection and notifications. Azure Security Center also provides a reputation system.
 
 #### Virtual Network
 The architecture defines a private virtual network with an address space of 10.200.0.0/16.
@@ -127,7 +139,7 @@ The architecture defines a private virtual network with an address space of 10.2
   -	1 NSG for Active Directory
   - 1 NSG for Application Gateway
   - 1 NSG for SQL Servers
-  - 1 NSG for Web Tier
+  - 1 NSG for App Service
 
 Each of the NSGs have specific ports and protocols open so that the solution can work securely and correctly. In addition, the following configurations are enabled for each NSG:
   -	[Diagnostic logs and events](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-nsg-manage-log) are enabled and stored in a storage account
@@ -136,14 +148,6 @@ Each of the NSGs have specific ports and protocols open so that the solution can
 **Subnets**: Each subnet is associated with its corresponding NSG.
 
 **Azure Management Portal**:
-
-#### Business Continuity
-
-**Web Tier**: The solution deploys web tier WebApps in an
-
-**Database Tier**: The solution deploys database tier
-
-**Active Directory**:
 
 ### Report
 The goal of the fourth and final step is to retain the required documentation and to manage data subject requests and breach notifications.
