@@ -2,16 +2,14 @@
 
 ## Overview
 The General Data Protection Regulation (GDPR) is fundamentally about protecting and enabling the privacy rights of individuals.
-The GDPR establishes strict global privacy requirements governing how organizations manage and protect personal data while respecting individual choice - no matter where data is sent, processed, or stored.
-
-Microsoft Azure services meet the stringent GDPR security requirements. Microsoft's [contractual terms](http://aka.ms/Online-Services-Terms) commit Microsoft to the requirements on processors in GDPR Article 28 and other Articles of GDPR. These commitments guarantee that organizations can:
+The GDPR establishes strict global privacy requirements governing how organizations manage and protect personal data while respecting individual choice - no matter where data is sent, processed, or stored. Microsoft Azure services meet the stringent GDPR security requirements and Microsoft's contractual commitments guarantee that organizations can:
 - Respond to requests to correct, amend or delete personal data.
 - Detect and report personal data breaches.
 - Demonstrate compliance with the GDPR.
 
 This Azure Security and Compliance Blueprint provides guidance for how to deliver a Microsoft Azure data warehouse architecture that helps organizations identify and catalog personal data in systems, build more secure environments, and simplify management of GDPR compliance. This solution provides guidance on the deployment and configuration of Azure resources for a common reference architecture, demonstrating ways in which customers can meet specific security and compliance requirements and serves as a foundation for customers to build and configure their own data warehouse solutions in Azure.
 
-This reference architecture, associated implementation guide, and threat model are intended to serve as a foundation for customers to adjust to their specific requirements and should not be used as-is in a production environment. Please note the following:
+This reference architecture, associated control implementation guides, and threat models are intended to serve as a foundation for customers to adjust to their specific requirements and should not be used as-is in a production environment. Please note the following:
 - The architecture provides a baseline to help customers deploy workloads to Azure in a GDPR-compliant manner.
 - Customers are responsible for conducting appropriate security and compliance assessments of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
@@ -66,10 +64,10 @@ A critical step to addressing GDPR requirements is to identify all personal data
 
 [Data Catalog](https://docs.microsoft.com/azure/data-catalog/data-catalog-what-is-data-catalog) makes data sources easily discoverable and understandable by the users who manage the data. Common data sources can be registered, tagged, and searched for personal data. The data remains in its existing location, but a copy of its metadata is added to Data Catalog, along with a reference to the data source location. The metadata is also indexed to make each data source easily discoverable via search and understandable to the users who discover it.
 
-This solution deploys a [SQL Data Warehouse](https://docs.microsoft.com/azure/sql-data-warehouse/sql-data-warehouse-overview-what-is), which is an Enterprise Data Warehouse (EDW) that leverages Massively Parallel Processing (MPP) to quickly run complex queries across petabytes of data, allowing users to efficiently identify personal data. Users can use simple PolyBase T-SQL queries to import big data into the SQL Data Warehouse and utilize the power of MPP to run high-performance analytics. [SQL Server Reporting Services](https://docs.microsoft.com/en-us/sql/reporting-services/report-data/sql-azure-connection-type-ssrs) provides quick creation of reports with tables, charts, maps, gauges, matrixes, and more for Azure SQL Data Warehouse.
+This solution deploys an [SQL Data Warehouse](https://docs.microsoft.com/azure/sql-data-warehouse/sql-data-warehouse-overview-what-is), which is an Enterprise Data Warehouse (EDW) that leverages Massively Parallel Processing (MPP) to quickly run complex queries across petabytes of data, allowing users to efficiently identify personal data. Users can use simple polybase T-SQL queries to import big data into the SQL Data Warehouse and utilize the power of MPP to run high-performance analytics.
 
-Azure Active Directory (AAD) enables administrators to search for user data, and then edit data associated with a user account.
-Furthermore, Microsoft customers can correct inaccurate or incomplete data hosted in Azure SQL Database by using SQL queries.
+The Azure Active Directory (AAD) deployed in this solution enables administrators to search for user data, and then edit data associated with a user account.
+Furthermore, by using SQL queries, Microsoft customers can correct inaccurate or incomplete data hosted in Azure SQL Database.
 
 ### Manage
 The goal of the second step is to govern how personal data is used and accessed within the organization.
@@ -86,7 +84,7 @@ The following technologies provide capabilities to manage access to personal dat
 ### Protect
 The goal of the third step is to establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
 
-[AAD Identity Protection](https://docs.microsoft.com/azure/active-directory/active-directory-identityprotection) detects potential vulnerabilities affecting an organization’s identities, configures automated responses to detected suspicious actions related to an organization’s identities, and investigates suspicious incidents to take appropriate action to resolve them.
+-	[AAD Identity Protection](https://docs.microsoft.com/azure/active-directory/active-directory-identityprotection) detects potential vulnerabilities affecting an organization’s identities, configures automated responses to detected suspicious actions related to an organization’s identities, and investigates suspicious incidents to take appropriate action to resolve them.
 
 #### Virtual Network
 This reference architecture defines a private virtual network with an address space of 10.0.0.0/16. Network Security Groups (NSGs), subnets, and a bastion host is used to limit the risk of unauthorized access, use, or disclosure of data.
@@ -105,7 +103,7 @@ Each of the NSGs have specific ports and protocols open so that the solution can
 
 **Bastion Host**: The bastion host is the single point of entry that allows users to access the deployed resources in this environment. The bastion host provides a secure connection to deployed resources by only allowing remote traffic from public IP addresses on a safe list. To permit remote desktop (RDP) traffic, the source of the traffic needs to be defined in the Network Security Group (NSG).
 
-This solution creates a virtual machine as a domain-joined bastion host with the following configurations:
+A virtual machine was created as a domain-joined bastion host with the following configurations:
 -	[Antimalware extension](https://docs.microsoft.com/azure/security/azure-security-antimalware)
 -	[OMS extension](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-extensions-oms)
 -	[Azure Diagnostics extension](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-extensions-diagnostics-template)
@@ -171,12 +169,12 @@ A key topic of the GDPR is data transfers in and out of the European Union (EU).
 
 #### Logging and Auditing
 
-Azure Security Center provides tools to enable customers to collect and review security logs from across Azure applications and services. Data collected by Azure Security Center can be aggregated in [Operations Management Suite (OMS)](https://docs.microsoft.com/en-us/azure/operations-management-suite/operations-management-suite-overview).
+Azure Security Center provides tools to enable customers to collect and review security logs from across Azure applications and services. Data collected by Azure Security Center is stored in a Log Analytics workspace described below.
 
-OMS provides extensive logging of system and user activity, as well as system health. The OMS [Log Analytics](https://azure.microsoft.com/services/log-analytics/) solution collects and analyzes data generated by resources in Azure and on-premises environments.
+[Operations Management Suite (OMS)](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) provides extensive logging of system and user activity, as well as system health. The OMS [Log Analytics](https://azure.microsoft.com/services/log-analytics/) solution collects and analyzes data generated by resources in Azure and on-premises environments.
 - **Activity Logs**: [Activity logs](https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitoring-overview-activity-logs) provide insight into operations performed on resources in a subscription. Activity logs can help determine who initiated an operation, when it occurred, and what the status of the operation was.
 - **Diagnostic Logs**: [Diagnostic logs](https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitoring-overview-of-diagnostic-logs) include all logs emitted by every resource. These logs include Windows event system logs and Azure Blob storage, tables, and queue logs.
-- **Log Archiving**: All diagnostic logs write to a centralized and encrypted Azure storage account for archival. The retention is user-configurable, up to 730 days, to meet organization-specific retention requirements. These logs connect to Azure Log Analytics for processing, storing, and dashboard reporting.
+- **Log Archiving**: All diagnostic logs write to a centralized and encrypted Azure storage account for archival with a defined retention period of 2 days. These logs connect to Azure Log Analytics for processing, storing, and dashboard reporting.
 
 Additionally, the following OMS solutions are included as a part of this architecture:
 -	[AD Assessment](https://docs.microsoft.com/azure/log-analytics/log-analytics-ad-assessment): The Active Directory Health Check solution assesses the risk and health of server environments on a regular interval and provides a prioritized list of recommendations specific to the deployed server infrastructure.
