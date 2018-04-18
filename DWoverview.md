@@ -173,7 +173,7 @@ A key topic of the GDPR is data transfers in and out of the European Union (EU).
 
 #### Logging and Auditing
 
-Azure Security Center triggers a [security alert](https://docs.microsoft.com/en-us/azure/security-center/security-center-managing-and-responding-alerts) when a threat is identified. The alert contains detailed information regarding a particular event, including suggestions for remediation. To assist incident response teams investigate and remediate threats, Azure Security Center includes a [threat intelligence report](https://docs.microsoft.com/en-us/azure/security-center/security-center-threat-report) that contains information about the threat that was detected. There are three types of threat reports, which can vary according to the attack. The reports available are:
+Azure Security Center triggers a [security alert](https://docs.microsoft.com/en-us/azure/security-center/security-center-managing-and-responding-alerts) when a threat is identified. The alert contains detailed information regarding an event, including suggestions for remediation. To assist incident response teams investigate and remediate threats, Azure Security Center includes a [threat intelligence report](https://docs.microsoft.com/en-us/azure/security-center/security-center-threat-report) that contains information about the threat that was detected. There are three types of threat reports, which can vary according to the attack. The reports available are:
 - Activity Group Report: provides deep dives into attackers, their objectives and tactics.
 - Campaign Report: focuses on details of specific attack campaigns.
 - Threat Summary Report: covers all of the items in the previous two reports.
