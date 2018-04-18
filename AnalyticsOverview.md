@@ -16,6 +16,8 @@ This reference architecture, associated implementation guide, and threat model a
 - Customers are responsible for conducting appropriate security and compliance assessments of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
 ## Architecture Diagram and Components
+![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20%E2%80%93%20GDPR%20Reference%20Architecture.png?raw=true)
+
 This solution uses the following Azure services. Details of the deployment architecture are in the [Deployment Architecture](#deployment-architecture) section.
 
 - Azure Functions
@@ -23,11 +25,13 @@ This solution uses the following Azure services. Details of the deployment archi
 - Azure Machine Learning Services
 - Azure Active Directory
 - Azure Key Vault
-- OMS
+- Operations Management Suite (OMS)
 - Azure Monitor
 - Azure Storage
 - ExpressRoute/VPN Gateway
 - Power BI Dashboard
+- Azure Data Catalog
+- Azure Security Center
 
 ## Deployment Architecture
 Microsoft Azure services help customers in their preparation for meeting GDPR requirements. Microsoft has developed a four-step process that customers can follow on their journey to GDPR compliance:
@@ -158,6 +162,8 @@ Additionally, the following OMS solutions are included as a part of this archite
 ## Threat Model
 
 The data flow diagram (DFD) for this reference architecture is available for [download](https://aka.ms/blueprintdwthreatmodel) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
+
+![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20%E2%80%93%20GDPR%20Threat%20Model.png?raw=true)
 
 ## Compliance Documentation
 The Azure Security and Compliance Blueprint – GDPR Customer Responsibility Matrix lists controller and processor responsibilities for all GDPR articles. Please note that for Azure services, a customer is usually the controller and Microsoft acts as the processor.
