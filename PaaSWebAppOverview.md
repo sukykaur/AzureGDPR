@@ -1,40 +1,39 @@
-# Azure Security and Compliance Blueprint: Analytics for GDPR
+# Azure Security and Compliance Blueprint - Web Application for GDPR
 
 ## Overview
-The General Data Protection Regulation (GDPR) is fundamentally about protecting and enabling the privacy rights of individuals.
-The GDPR establishes strict global privacy requirements governing how organizations manage and protect personal data while respecting individual choice - no matter where data is sent, processed, or stored.
-
-Microsoft Azure services meet the stringent GDPR security requirements. Microsoft's [contractual terms](http://aka.ms/Online-Services-Terms) commit Microsoft to the requirements on processors in GDPR Article 28 and other Articles of GDPR. These commitments guarantee that organizations can:
-- Respond to requests to correct, amend or delete personal data.
-- Detect and report personal data breaches.
-- Demonstrate compliance with the GDPR.
-
-This Azure Security and Compliance Blueprint provides guidance for how to deliver a Microsoft Azure analytics architecture that helps organizations identify and catalog personal data in systems, build more secure environments, and simplify management of GDPR compliance. This solution provides guidance on the deployment and configuration of Azure resources for a common reference architecture, demonstrating ways in which customers can meet specific security and compliance requirements and serves as a foundation for customers to build and configure their own analytics solutions in Azure.
-
-This reference architecture, associated implementation guide, and threat model are intended to serve as a foundation for customers to adjust to their specific requirements and should not be used as-is in a production environment. Please note the following:
-- The architecture provides a baseline to help customers deploy workloads to Azure in a GDPR-compliant manner.
-- Customers are responsible for conducting appropriate security and compliance assessments of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
 ## Architecture Diagram and Components
-![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20%E2%80%93%20GDPR%20Reference%20Architecture.png?raw=true)
 
-This solution uses the following Azure services. Details of the deployment architecture are in the [Deployment Architecture](#deployment-architecture) section.
 
-- Azure Functions
-- Azure SQL Database
-- Azure Machine Learning Services
-- Azure Active Directory
+
+![alt text](?raw=true)
+
+This solution uses the following Azure services. Details of the deployment architecture are located in the [deployment architecture](#deployment-architecture) section.
+
+- Azure Active Directory (AAD)
 - Azure Key Vault
-- Operations Management Suite (OMS)
-- Azure Monitor
+- Azure SQL Database
+- Azure Application Gateway
+	- (1) WAF Application Gateway enabled
+		- Firewall Mode: Prevention
+		- Rule set: OWASP 3.0
+		- Listener: Port 443
+- Azure Virtual Network
+- Network Security Groups
+- Azure DNS
 - Azure Storage
-- ExpressRoute/VPN Gateway
-- Power BI Dashboard
+- Operations Management Suite (OMS)
+- Log Analytics
+- Azure Monitor
+- Application Insights
 - Azure Data Catalog
 - Azure Security Center
-- Application Insights
-- Azure Event Grid
-- Network Security Groups
+- App Service Environment v2
+- Azure Load Balancer
+- Azure Web App
+- Azure Resource Manager
+- Azure Automation
+- Azure Automation Runbooks
 
 ## Deployment Architecture
 Microsoft Azure services help customers in their preparation for meeting GDPR requirements. Microsoft has developed a four-step process that customers can follow on their journey to GDPR compliance:
@@ -43,9 +42,9 @@ Microsoft Azure services help customers in their preparation for meeting GDPR re
 3. Protect: Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
 4. Report: Keep required documentation and manage data requests and breach notifications.
 
-The following section details this reference architecture's development and implementation elements as they relate to each step
+The following section details this reference architecture's development and implementation elements as they relate to each step.
 
-### **Discover**
+### Discover
 A critical step to addressing GDPR requirements is to identify all personal data managed by the organization and where it resides.
 
 [Data Catalog](https://docs.microsoft.com/azure/data-catalog/data-catalog-what-is-data-catalog) makes data sources easily discoverable and understandable by the users who manage the data. Common data sources can be registered, tagged, and searched for personal data. The data remains in its existing location, but a copy of its metadata is added to Data Catalog, along with a reference to the data source location. The metadata is also indexed to make each data source easily discoverable via search and understandable to the users who discover it.
@@ -58,7 +57,7 @@ Using SQL queries, Microsoft customers can correct inaccurate or incomplete data
 ### Manage
 The goal of the second step is to govern how personal data is used and accessed within the organization.
 
-Azure enables users to export their data at any time, without seeking approval from Microsoft. Azure Active Directory (AAD) enables ad to export data associated with AAD accounts in a .csv file. Using SQL queries, Microsoft customers can identify and then export personal data hosted in Azure SQL Database. The [Extended Properties](https://docs.microsoft.com/sql/relational-databases/system-stored-procedures/sp-addextendedproperty-transact-sql) feature can be used to discontinue the processing of data subjects, as it allows users to add custom properties to database objects and tag data as "Discontinued" to support application logic to prevent the processing of associated personal data. [Row-Level Security](https://docs.microsoft.com/sql/relational-databases/security/row-level-security) enables users to define policies to restrict access to data to discontinue processing.
+Azure enables users to export their data at any time, without seeking approval from Microsoft. Azure Active Directory (AAD) enables users to export data associated with AAD accounts in a .csv file. Using SQL queries, Microsoft customers can identify and then export personal data hosted in Azure SQL Database. The [Extended Properties](https://docs.microsoft.com/sql/relational-databases/system-stored-procedures/sp-addextendedproperty-transact-sql) feature can be used to discontinue the processing of data subjects, as it allows users to add custom properties to database objects and tag data as "Discontinued" to support application logic to prevent the processing of associated personal data. [Row-Level Security](https://docs.microsoft.com/sql/relational-databases/security/row-level-security) enables users to define policies to restrict access to data to discontinue processing.
 
 #### Identity Management
 The following technologies provide capabilities to manage access to personal data in the Azure environment:
@@ -67,23 +66,10 @@ The following technologies provide capabilities to manage access to personal dat
 -	[Azure Role-based Access Control (RBAC)](https://docs.microsoft.com/azure/active-directory/role-based-access-control-configure) enables administrators to define fine-grained access permissions to grant only the amount of access that users need to perform their jobs. Instead of giving every user unrestricted permissions for Azure resources, administrators can allow only certain actions for accessing personal data. Subscription access is limited to the subscription administrator.
 - [AAD Privileged Identity Management](https://docs.microsoft.com/azure/active-directory/active-directory-privileged-identity-management-getting-started) enables customers to minimize the number of users who have access to certain information such as personal data.  Administrators can use AAD Privileged Identity Management to discover, restrict, and monitor privileged identities and their access to resources. This functionality can also be used to enforce on-demand, just-in-time administrative access when needed.
 
-### **Protect**
+### Protect
 The goal of the third step is to establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
 
 -	[AAD Identity Protection](https://docs.microsoft.com/azure/active-directory/active-directory-identityprotection) detects potential vulnerabilities affecting an organization’s identities, configures automated responses to detected suspicious actions related to an organization’s identities, and investigates suspicious incidents to take appropriate action to resolve them.
-
-#### **Virtual Network**
-This reference architecture defines a private virtual network with an address space of 10.0.0.0/16.
-
-**Network Security Groups**: [NSGs](https://docs.microsoft.com/azure/virtual-network/virtual-networks-nsg) contain Access Control Lists (ACLs) that allow or deny traffic within a VNet. NSGs can be used to secure traffic at a subnet or individual VM level. The following NSGs exist:
-  -	An NSG for Active Directory
-  - An NSG for the Workload
-
-Each of the NSGs have specific ports and protocols open so that the solution can work securely and correctly. In addition, the following configurations are enabled for each NSG:
-  -	[Diagnostic logs and events](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-nsg-manage-log) are enabled and stored in a storage account
-  -	OMS Log Analytics is connected to the [NSG's diagnostics](https://github.com/krnese/AzureDeploy/blob/master/AzureMgmt/AzureMonitor/nsgWithDiagnostics.json)
-
-**Subnets**: Each subnet is associated with its corresponding NSG.
 
 #### Secrets Management
 The solution uses [Azure Key Vault](https://azure.microsoft.com/services/key-vault/) for the management of keys and secrets. Azure Key Vault helps safeguard cryptographic keys and secrets used by cloud applications and services. The following Azure Key Vault capabilities help customers protect personal data and access to such data:
@@ -124,21 +110,58 @@ For users of Azure SQL Database, DDM can automatically discover potentially sens
 #### Security
 **Azure Security Center**: Azure Security Center enables customers to monitor traffic, collect logs, and analyze these data sources for threats. For incidents in which Microsoft holds some or all of the responsibility to respond, Microsoft has established a detailed [Security Incident Response Management process specific to Azure](https://gallery.technet.microsoft.com/Azure-Security-Response-in-dd18c678).
 
-### **Report**
-**Keep required documentation and manage data requests and breach notifications.**
+#### Application Gateway
+
+The architecture reduces the risk of security vulnerabilities using an Application Gateway with web application firewall (WAF), and the OWASP ruleset enabled. Additional capabilities include:
+
+-[End-to-End-SSL](https://docs.microsoft.com/azure/application-gateway/application-gateway-end-to-end-ssl-powershell)
+- Enable [SSL Offload](https://docs.microsoft.com/azure/application-gateway/application-gateway-ssl-portal)
+- Disable [TLS v1.0 and v1.1](https://docs.microsoft.com/azure/application-gateway/application-gateway-end-to-end-ssl-powershell)
+- [Web application firewall](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-overview) (WAF mode)
+- [Prevention mode](https://docs.microsoft.com/azure/application-gateway/application-gateway-web-application-firewall-portal) with OWASP 3.0 ruleset
+
+#### Virtual Network
+The architecture defines a private virtual network with an address space of 10.200.0.0/16.
+
+**Network Security Groups**: [NSGs](https://docs.microsoft.com/azure/virtual-network/virtual-networks-nsg) contain Access Control Lists (ACLs) that allow or deny traffic within a VNet. NSGs can be used to secure traffic at a subnet or individual VM level. The following NSGs exist:
+  -	1 NSG for Active Directory
+  - 1 NSG for Application Gateway
+  - 1 NSG for SQL Servers
+  - 1 NSG for Web Tier
+
+Each of the NSGs have specific ports and protocols open so that the solution can work securely and correctly. In addition, the following configurations are enabled for each NSG:
+  -	[Diagnostic logs and events](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-nsg-manage-log) are enabled and stored in a storage account
+  -	OMS Log Analytics is connected to the [NSG's diagnostics](https://github.com/krnese/AzureDeploy/blob/master/AzureMgmt/AzureMonitor/nsgWithDiagnostics.json)
+
+**Subnets**: Each subnet is associated with its corresponding NSG.
+
+**Azure Management Portal**:
+
+#### Business Continuity
+
+**Web Tier**: The solution deploys web tier WebApps in an
+
+**Database Tier**: The solution deploys database tier
+
+**Active Directory**:
+
+### Report
+The goal of the fourth and final step is to retain the required documentation and to manage data subject requests and breach notifications.
+
+A key topic of the GDPR is data transfers in and out of the European Union (EU). This reference architecture can be deployed to a specific region or a national cloud to specify where data will be stored and to reduce the need for transfer of personal data outside of the EU. These choices include multiple regional choices within Europe as well as the German sovereign data storage region.
 
 **Azure Monitor**
-[Azure Monitor](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/) helps customers track performance, maintain security, and identify trends by enabling organizations to audit, create alerts, and archive data, including tracking API calls in customers' Azure resources.
+[Azure Monitor](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/) helps users track performance, maintain security, and identify trends by enabling organizations to audit, create alerts, and archive data, including tracking API calls in customers' Azure resources.
 
 **Application Insights**
-[Application Insights](https://docs.microsoft.com/en-us/azure/application-insights/) is an extensible Application Performance Management (APM) service for web developers building and managing apps on multiple platforms. Learn how to detect & diagnose issues and understand usage for web apps and services using quickstarts, tutorials, and reference documentation.
+[Application Insights](https://docs.microsoft.com/en-us/azure/application-insights/) is an extensible Application Performance Management (APM) service for web developers building and managing apps on multiple platforms. Organizations can learn how to detect & diagnose issues and understand usage for web apps and services using quickstarts, tutorials, and reference documentation.
 
 #### Logging and Auditing
 
-[Operations Management Suite (OMS)](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) provides extensive logging of system and user activity, as well as system health. The OMS [Log Analytics](https://azure.microsoft.com/services/log-analytics/) solution collects and analyzes data generated by resources in Azure and on-premises environments.
+OMS provides extensive logging of system and user activity, as well as system health. The OMS [Log Analytics](https://azure.microsoft.com/services/log-analytics/) solution collects and analyzes data generated by resources in Azure and on-premises environments.
 - **Activity Logs**: [Activity logs](https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitoring-overview-activity-logs) provide insight into operations performed on resources in a subscription. Activity logs can help determine who initiated an operation, when it occurred, and what the status of the operation was.
-- **Diagnostic Logs**: [Diagnostic logs](https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitoring-overview-of-diagnostic-logs) include all logs emitted by every resource. These logs include Windows event system logs and Azure Blob storage, tables, and queue logs.
-- **Log Archiving**: All diagnostic logs write to a centralized and encrypted Azure storage account for archival with a defined retention period of 2 days. These logs connect to Azure Log Analytics for processing, storing, and dashboard reporting.
+- **Diagnostic Logs**: [Diagnostic logs](https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitoring-overview-of-diagnostic-logs) include all logs emitted by every resource. These logs include Windows event system logs, Azure storage logs, Key Vault audit logs, and Application Gateway access and firewall logs.
+- **Log Archiving**: All diagnostic logs write to a centralized and encrypted Azure storage account for archival. The retention is user-configurable, up to 730 days, to meet organization-specific retention requirements. These logs connect to Azure Log Analytics for processing, storing, and dashboard reporting.
 
 Additionally, the following OMS solutions are included as a part of this architecture:
 -	[AD Assessment](https://docs.microsoft.com/azure/log-analytics/log-analytics-ad-assessment): The Active Directory Health Check solution assesses the risk and health of server environments on a regular interval and provides a prioritized list of recommendations specific to the deployed server infrastructure.
@@ -151,22 +174,11 @@ Additionally, the following OMS solutions are included as a part of this archite
 -	[Azure Activity Logs](https://docs.microsoft.com/azure/log-analytics/log-analytics-activity): The Activity Log Analytics solution assists with analysis of the Azure activity logs across all Azure subscriptions for a customer.
 -	[Change Tracking](https://docs.microsoft.com/azure/log-analytics/log-analytics-activity): The Change Tracking solution allows customers to easily identify changes in the environment.
 
-### Additional Services
-
-**Azure Machine Learning**
-[Azure Machine Learning](https://docs.microsoft.com/en-us/azure/machine-learning/preview/) services (preview) enable building, deploying, and managing machine learning and AI models using any Python tools and libraries. Organizations can use a wide variety of data and compute services in Azure to store and process data.
-
-**Azure Functions**
-[Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview) is a solution for easily running small pieces of code, or "functions," in the cloud. Customers can write just the code needed for the problem at hand, without worrying about a whole application or the infrastructure to run it. Functions can make development even more productive, and users can use their development language of choice, such as C#, F#, Node.js, Java, or PHP. Pay only for the time the code runs and trust Azure to scale as needed. Azure Functions lets users develop serverless applications on Microsoft Azure.
-
-**Azure Event Grid**
-[Azure Event Grid](https://docs.microsoft.com/en-us/azure/event-grid/overview) allows customers to easily build applications with event-based architectures. Users select the Azure resource they would like to subscribe to, and give the event handler or WebHook endpoint to send the event to. Event Grid has built-in support for events coming from Azure services, like storage blobs and resource groups. Event Grid also has custom support for application and third-party events, using custom topics and custom webhooks.
-
 ## Threat Model
 
 The data flow diagram (DFD) for this reference architecture is available for [download](https://aka.ms/blueprintdwthreatmodel) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
 
-![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20%E2%80%93%20GDPR%20Threat%20Model.png?raw=true)
+![alt text](?raw=true)
 
 ## Compliance Documentation
 The Azure Security and Compliance Blueprint – GDPR Customer Responsibility Matrix lists controller and processor responsibilities for all GDPR articles. Please note that for Azure services, a customer is usually the controller and Microsoft acts as the processor.
