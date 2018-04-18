@@ -32,6 +32,8 @@ This solution uses the following Azure services. Details of the deployment archi
 - Power BI Dashboard
 - Azure Data Catalog
 - Azure Security Center
+- Application Insights
+- Azure Event Grid
 
 ## Deployment Architecture
 Microsoft Azure services help customers in their preparation for meeting GDPR requirements. Microsoft has developed a four-step process that customers can follow on their journey to GDPR compliance:
