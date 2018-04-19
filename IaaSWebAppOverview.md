@@ -58,7 +58,7 @@ The goal of the second step is to govern how personal data is used and accessed 
 #### Identity Management
 The following technologies provide capabilities to manage access to personal data in the Azure environment:
 - [Azure Active Directory (Azure AD)](https://azure.microsoft.com/services/active-directory/) is Microsoft's multi-tenant cloud-based directory and identity management service.
-- Authentication to a customer-deployed web application can be performed using Azure AD. For more information, see [Integrating applications with Azure Active Directory](https://docs.microsoft.com/azure/active-directory/develop/active-directory-integrating-applications).  
+- Authentication to a customer-deployed web application can be performed using Azure AD. For more information, see [Integrating applications with Azure Active Directory](https://docs.microsoft.com/azure/active-directory/develop/active-directory-integrating-applications).
 - [Azure Role-Based Access Control (RBAC)](https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal) enables precisely focused access management for Azure. Subscription access is limited to the subscription administrator, and access to resources can be limited based on user role.
 - A deployed IaaS Active Directory instance provides identity management at the OS-level for deployed IaaS virtual machines.
 
@@ -148,15 +148,15 @@ Additionally, the following OMS solutions are included as a part of this archite
 
 ## Threat Model
 
-The data flow diagram (DFD) for this reference architecture is available for download or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
+The data flow diagram (DFD) for this reference architecture is available for [download](https://aka.ms/gdprIaaSdfd) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
 
 ![alt text](?raw=true)
 
 ## Compliance Documentation
 
-The Azure Security and Compliance Blueprint - GDPR Customer Responsibility Matrix lists controller and processor responsibilities for all GDPR articles. Please note that for Azure services, a customer is usually the controller and Microsoft acts as the processor.
+The [Azure Security and Compliance Blueprint - GDPR Customer Responsibility Matrix](https://aka.ms/gdprCRM) lists controller and processor responsibilities for all GDPR articles. Please note that for Azure services, a customer is usually the controller and Microsoft acts as the processor.
 
-The Azure Security and Compliance Blueprint - GDPR IaaS WebApp Implementation Matrix provides information on which GDPR articles are addressed by the IaaS WebApp architecture, including detailed descriptions of how the implementation meets the requirements of each covered article.
+The [Azure Security and Compliance Blueprint - GDPR IaaS WebApp Implementation Matrix](https://aka.ms/gdprIaaSweb) provides information on which GDPR articles are addressed by the IaaS WebApp architecture, including detailed descriptions of how the implementation meets the requirements of each covered article.
 
 ## Disclaimer
 
