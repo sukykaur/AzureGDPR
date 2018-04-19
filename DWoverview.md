@@ -198,13 +198,14 @@ Additionally, the following OMS solutions are included as a part of this archite
 
 ## Threat Model
 
-The data flow diagram (DFD) for this reference architecture is available for [download](https://aka.ms/blueprintdwthreatmodel) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
+The data flow diagram (DFD) for this reference architecture is available for [download](https://aka.ms/gdprDWdfd) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
 
 ![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20-%20GDPR%20DW%20Threat%20Model.PNG?raw=true)
-## Compliance Documentation
-The Azure Security and Compliance Blueprint – GDPR Customer Responsibility Matrix lists controller and processor responsibilities for all GDPR articles. Please note that for Azure services, a customer is usually the controller and Microsoft acts as the processor.
 
-The Azure Security and Compliance Blueprint - GDPR Data Warehouse Implementation Matrix provides information on which GDPR articles are addressed by the data warehouse architecture, including detailed descriptions of how the implementation meets the requirements of each covered article.
+## Compliance Documentation
+The [Azure Security and Compliance Blueprint – GDPR Customer Responsibility Matrix](https://aka.ms/gdprCRM) lists controller and processor responsibilities for all GDPR articles. Please note that for Azure services, a customer is usually the controller and Microsoft acts as the processor.
+
+The [Azure Security and Compliance Blueprint - GDPR Data Warehouse Implementation Matrix](https://aka.ms/gdprDW) provides information on which GDPR articles are addressed by the data warehouse architecture, including detailed descriptions of how the implementation meets the requirements of each covered article.
 
 ## Guidance and Recommendations
 ### VPN and ExpressRoute
