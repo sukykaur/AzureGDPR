@@ -32,10 +32,9 @@ This solution uses the following Azure services. Details of the deployment archi
 - Azure Web App
 - Azure Resource Manager
 - Azure Automation
-- Azure Automation Runbooks
 
 ## Deployment Architecture
-Microsoft Azure services help customers in their preparation for meeting GDPR requirements. Microsoft has developed a four-step process that customers can follow on their journey to GDPR compliance:
+Azure services help customers in their preparation for meeting GDPR requirements. Microsoft has developed a four-step process that customers can follow on their journey to GDPR compliance:
 1. Discover: Identify which personal data exists and where it resides.
 2. Manage: Govern how personal data is used and accessed.
 3. Protect: Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
@@ -46,19 +45,29 @@ The following section details this reference architecture's development and impl
 ### Service to Add
 
 **Azure DNS**
+The Domain Name System, or DNS, is responsible for translating (or resolving) a website or service name to its IP address. [Azure DNS](https://docs.microsoft.com/en-us/azure/dns/dns-overview) is a hosting service for DNS domains, providing name resolution using Azure infrastructure. By hosting domains in Azure, users can manage DNS records using the same credentials, APIs, tools, and billing as other Azure services. Azure DNS now also supports private DNS domains.
+
 **App Service Environment v2**
+The [Azure App Service Environment](https://docs.microsoft.com/en-us/azure/app-service/environment/intro) is an Azure App Service feature that provides a fully isolated and dedicated environment for securely running App Service apps at high scale. This capability can host your web apps, mobile apps, API apps, and functions.
+
 **Azure Load Balancer**
+[Azure Load Balancer](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview) allows you to scale your applications and create high availability for your services. Load Balancer supports inbound as well as outbound scenarios, and provides low latency, high throughput, and scales up to millions of flows for all TCP and UDP applications.
+
 **Azure Web App**
+[Azure Web Apps](https://docs.microsoft.com/en-us/azure/app-service/) enables you to build and host web applications in the programming language of your choice without managing infrastructure. It offers auto-scaling and high availability, supports both Windows and Linux, and enables automated deployments from GitHub, Visual Studio Team Services, or any Git repo.
+
 **Azure Resource Manager**
+[Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview) enables you to work with the resources in your solution as a group. You can deploy, update, or delete all the resources for your solution in a single, coordinated operation. You use a template for deployment and that template can work for different environments such as testing, staging, and production. Resource Manager provides security, auditing, and tagging features to help you manage your resources after deployment.
+
 **Azure Automation**
-**Azure Automation Runbooks**
+[Azure Automation](https://docs.microsoft.com/en-us/azure/automation/automation-intro) delivers a cloud-based automation and configuration service that provides consistent management across your Azure and non-Azure environments. It consists of process automation, update management, and configuration features. Azure Automation provides complete control during deployment, operations, and decommissioning of workloads and resources.
 
 ### Discover
 A critical step to addressing GDPR requirements is to identify all personal data managed by the organization and where it resides.
 
 [Data Catalog](https://docs.microsoft.com/azure/data-catalog/data-catalog-what-is-data-catalog) makes data sources easily discoverable and understandable by the users who manage the data. Common data sources can be registered, tagged, and searched for personal data. The data remains in its existing location, but a copy of its metadata is added to Data Catalog, along with a reference to the data source location. The metadata is also indexed to make each data source easily discoverable via search and understandable to the users who discover it.
 
-[Azure SQL Database](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-technical-overview) is a general-purpose relational database managed service in Microsoft Azure that supports structures such as relational data, JSON, spatial, and XML. SQL Database offers managed single SQL databases, managed SQL databases in an elastic pool, and SQL Managed Instances (in public preview). It delivers dynamically scalable performance and provides options such as columnstore indexes for extreme analytic analysis and reporting, and in-memory OLTP for extreme transactional processing. Microsoft handles all patching and updating of the SQL code base seamlessly and abstracts away all management of the underlying infrastructure.
+[Azure SQL Database](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-technical-overview) is a general-purpose relational database managed service in Azure that supports structures such as relational data, JSON, spatial, and XML. SQL Database offers managed single SQL databases, managed SQL databases in an elastic pool, and SQL Managed Instances (in public preview). It delivers dynamically scalable performance and provides options such as columnstore indexes for extreme analytic analysis and reporting, and in-memory OLTP for extreme transactional processing. Microsoft handles all patching and updating of the SQL code base seamlessly and abstracts away all management of the underlying infrastructure.
 
 Azure Active Directory (AAD) enables administrators to search for user data, and then edit data associated with a user account.
 Using SQL queries, Microsoft customers can correct inaccurate or incomplete data hosted in Azure SQL Database.
@@ -136,10 +145,8 @@ Enable [diagnostics logging](https://docs.microsoft.com/en-us/azure/application-
 The architecture defines a private virtual network with an address space of 10.200.0.0/16.
 
 **Network Security Groups**: [NSGs](https://docs.microsoft.com/azure/virtual-network/virtual-networks-nsg) contain Access Control Lists (ACLs) that allow or deny traffic within a VNet. NSGs can be used to secure traffic at a subnet or individual VM level. The following NSGs exist:
-  -	1 NSG for Active Directory
   - 1 NSG for Application Gateway
-  - 1 NSG for SQL Servers
-  - 1 NSG for App Service
+  - 1 NSG for App Service Environment
 
 Each of the NSGs have specific ports and protocols open so that the solution can work securely and correctly. In addition, the following configurations are enabled for each NSG:
   -	[Diagnostic logs and events](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-nsg-manage-log) are enabled and stored in a storage account
