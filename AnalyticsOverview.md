@@ -153,14 +153,14 @@ Additionally, the following OMS solutions are included as a part of this archite
 
 ## Threat Model
 
-The data flow diagram (DFD) for this reference architecture is available for [download](https://aka.ms/____) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
+The data flow diagram (DFD) for this reference architecture is available for [download](https://aka.ms/gdprAnalyticsdfd) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
 
 ![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20%E2%80%93%20GDPR%20Threat%20Model.png?raw=true)
 
 ## Compliance Documentation
 The [Azure Security and Compliance Blueprint – GDPR Customer Responsibility Matrix](https://aka.ms/gdprCRM) lists controller and processor responsibilities for all GDPR articles. Please note that for Azure services, a customer is usually the controller and Microsoft acts as the processor.
 
-The [Azure Security and Compliance Blueprint - GDPR Data Analytics Implementation Matrix](https://aka.ms/____) provides information on which GDPR articles are addressed by the data warehouse architecture, including detailed descriptions of how the implementation meets the requirements of each covered article.
+The [Azure Security and Compliance Blueprint - GDPR Data Analytics Implementation Matrix](https://aka.ms/gdprAnalytics) provides information on which GDPR articles are addressed by the data warehouse architecture, including detailed descriptions of how the implementation meets the requirements of each covered article.
 
 
 ## Guidance and Recommendations
