@@ -1,12 +1,27 @@
 # Azure Security and Compliance Blueprint - Web Application for GDPR
 
 ## Overview
+The General Data Protection Regulation (GDPR) contains many requirements about collecting, storing, and using personal information, including how organizations identify and secure personal data, accommodate transparency requirements, detect and report personal data breaches, and train privacy personnel and other employees. The GDPR gives individuals greater control over their personal data and imposes many new obligations on organizations that collect, handle, or analyze personal data. The GDPR imposes new rules on organizations that offer goods and services to people in the European Union (EU), or that collect and analyze data tied to EU residents. The GDPR applies no matter where an organization is located.
+
+Microsoft designed Azure with industry-leading security measures and privacy policies to safeguard data in the cloud, including the categories of personal data identified by the GDPR. Microsoft's
+[contractual terms](http://aka.ms/Online-Services-Terms) commit Microsoft to the requirements of processors.
+
+This Azure Security and Compliance Blueprint provides guidance to deploy a data warehouse architecture in Azure that aligns with the requirements of the GDPR. This solution demonstrates ways in which customers can meet specific security and compliance requirements, and serves as a foundation for customers to build and configure their own data warehouse solutions in Azure. Customers can utilize this reference architecture and follow Microsoft's [four-step process](https://aka.ms/gdprebook) in their journey to GDPR compliance:
+1. Discover: Identify which personal data exists and where it resides.
+2. Manage: Govern how personal data is used and accessed.
+3. Protect: Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
+4. Report: Keep required documentation and manage data requests and breach notifications.
+
+This reference architecture, associated implementation guide, and threat model are intended to serve as a foundation for customers to adapt to their specific requirements and should not be used as-is in a production environment. Please note the following:
+- The architecture provides a baseline to help customers deploy workloads to Azure in a GDPR-compliant manner.
+- Customers are responsible for conducting appropriate security and compliance assessments of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
 ## Architecture Diagram and Components
+This solution deploys a reference architecture for a GDPR web application with a database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources.
 
-This solution deploys a reference architecture for an GDPR web application with a database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources.
 
-![alt text](?raw=true)
+
+![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20-%20GDPR%20DW%20Visio.PNG?raw=true)
 
 This solution uses the following Azure services. Details of the deployment architecture are located in the [deployment architecture](#deployment-architecture) section.
 
@@ -41,12 +56,6 @@ This solution uses the following Azure services. Details of the deployment archi
 - Azure Security Center
 
 ## Deployment Architecture
-Microsoft Azure services help customers in their preparation for meeting GDPR requirements. Microsoft has developed a four-step process that customers can follow on their journey to GDPR compliance:
-1. Discover: Identify which personal data exists and where it resides.
-2. Manage: Govern how personal data is used and accessed.
-3. Protect: Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
-4. Report: Keep required documentation and manage data requests and breach notifications.
-
 The following section details this reference architecture's development and implementation elements as they relate to each step.
 
 ### Discover
