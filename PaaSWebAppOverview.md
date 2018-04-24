@@ -6,7 +6,7 @@ The General Data Protection Regulation (GDPR) contains many requirements about c
 Microsoft designed Azure with industry-leading security measures and privacy policies to safeguard data in the cloud, including the categories of personal data identified by the GDPR. Microsoft's
 [contractual terms](http://aka.ms/Online-Services-Terms) commit Microsoft to the requirements of processors.
 
-This Azure Security and Compliance Blueprint provides guidance to deploy an Infrastructure as a Service (IaaS) environment suitable for a simple Internet-facing web application. This solution demonstrates ways in which customers can meet the specific security and compliance requirements of the GDPR and serves as a foundation for customers to build and configure their own IaaS WebApp solutions in Azure. Customers can utilize this reference architecture and follow Microsoft's [four-step process](https://aka.ms/gdprebook) in their journey to GDPR compliance:
+This Azure Security and Compliance Blueprint provides guidance to deploy an Platform as a Service (PaaS) environment suitable for a simple Internet-facing web application. This solution demonstrates ways in which customers can meet the specific security and compliance requirements of the GDPR and serves as a foundation for customers to build and configure their own PaaS WebApp solutions in Azure. Customers can utilize this reference architecture and follow Microsoft's [four-step process](https://aka.ms/gdprebook) in their journey to GDPR compliance:
 1. Discover: Identify which personal data exists and where it resides.
 2. Manage: Govern how personal data is used and accessed.
 3. Protect: Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
