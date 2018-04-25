@@ -36,7 +36,7 @@ This solution uses the following Azure services. Details of the deployment archi
 	- (1) /16 virtual networks
 	- (5) /24 subnets
 	- DNS settings are set to both domain controllers
-- Azure SQL Load Balancer
+- Azure Load Balancer
 - Azure Application Gateway
 	- (1) WAF Application Gateway enabled
 		- Firewall Mode: Prevention
