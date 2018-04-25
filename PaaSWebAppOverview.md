@@ -53,7 +53,7 @@ The following section details the deployment and implementation elements.
 **App Service Environment v2**:
 The [Azure App Service Environment](https://docs.microsoft.com/en-us/azure/app-service/environment/intro) is an App Service feature that provides a fully isolated and dedicated environment for securely running App Service apps at a high scale.
 
-ASEs are isolated to only run a single customer's applications, and are always deployed into a virtual network. Customers have fine-grained control over both inbound and outbound application network traffic, and applications can establish high-speed secure connections over virtual networks to on-premises corporate resources.
+ASEs are isolated to only run a single customer's applications and are always deployed into a virtual network. Customers have fine-grained control over both inbound and outbound application network traffic, and applications can establish high-speed secure connections over virtual networks to on-premises corporate resources.
 
 Use of ASEs for this architecture are allowed for the following controls/configurations:
 
