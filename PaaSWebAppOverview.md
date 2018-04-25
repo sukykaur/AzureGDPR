@@ -17,7 +17,7 @@ This reference architecture, associated implementation guide, and threat model a
 - Customers are responsible for conducting appropriate security and compliance assessments of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
 ## Architecture Diagram and Components
-
+This solution provides a reference architecture for a PaaS web application with an Azure SQL Database backend. The web application is hosted in an isolated Azure App Service Environment, which is a private, dedicated environment in an Azure datacenter. The environment load balances traffic for the web application across VMs managed by Azure. This architecture also includes network security groups, an application gateway, Azure DNS, and load balancer. Furthermore, Application Insights provides real time application performance management and analytics through Operations Management Suite (OMS). **Azure recommends configuring a VPN or Azure ExpressRoute connection for management and data import into the reference architecture subnet.**
 
 ![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20-%20GDPR%20Paas%20WebApp%20Reference%20Architecture.png?raw=true)
 
@@ -73,9 +73,9 @@ Use of ASEs for this architecture are allowed for the following controls/configu
 The architecture defines a private virtual network with an address space of 10.200.0.0/16.
 
 **Network Security Groups**: [NSGs](https://docs.microsoft.com/azure/virtual-network/virtual-networks-nsg) contain Access Control Lists (ACLs) that allow or deny traffic within a VNet. NSGs can be used to secure traffic at a subnet or individual VM level. The following NSGs exist:
-  - 1 NSG for Application Gateway
-  - 1 NSG for App Service Environment
-	- 1 NSG for Azure SQL Database
+- 1 NSG for Application Gateway
+- 1 NSG for App Service Environment
+- 1 NSG for Azure SQL Database
 
 Each of the NSGs have specific ports and protocols open so that the solution can work securely and correctly. In addition, the following configurations are enabled for each NSG:
   -	[Diagnostic logs and events](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-nsg-manage-log) are enabled and stored in a storage account
