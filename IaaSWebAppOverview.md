@@ -6,7 +6,7 @@ The General Data Protection Regulation (GDPR) contains many requirements about c
 Microsoft designed Azure with industry-leading security measures and privacy policies to safeguard data in the cloud, including the categories of personal data identified by the GDPR. Microsoft's
 [contractual terms](http://aka.ms/Online-Services-Terms) commit Microsoft to the requirements of processors.
 
-This Azure Security and Compliance Blueprint provides guidance to deploy a data warehouse architecture in Azure that assists with the requirements of the GDPR. This solution demonstrates ways in which customers can meet specific security and compliance requirements and serves as a foundation for customers to build and configure their own data warehouse solutions in Azure. Customers can utilize this reference architecture and follow Microsoft's [four-step process](https://aka.ms/gdprebook) in their journey to GDPR compliance:
+This Azure Security and Compliance Blueprint provides guidance to deploy an Infrastructure as a Service (IaaS) environment suitable for a simple Internet-facing web application. This solution demonstrates ways in which customers can meet specific security and compliance requirements of the GDPR and serves as a foundation for customers to build and configure their own IaaS Web App solutions in Azure. Customers can utilize this reference architecture and follow Microsoft's [four-step process](https://aka.ms/gdprebook) in their journey to GDPR compliance:
 1. Discover: Identify which personal data exists and where it resides.
 2. Manage: Govern how personal data is used and accessed.
 3. Protect: Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
@@ -17,7 +17,7 @@ This reference architecture, associated implementation guide, and threat model a
 - Customers are responsible for conducting appropriate security and compliance assessments of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
 ## Architecture Diagram and Components
-This solution deploys a reference architecture for an IaaS web application with a database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources.
+This solution deploys a reference architecture for an IaaS web application with a database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources. **Azure recommends configuring a VPN or Azure ExpressRoute connection for management and data import into the reference architecture subnet.**
 
 ![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20-%20GDPR%20IaaS%20WebApp%20Visio.PNG?raw=true)
 
@@ -55,16 +55,6 @@ This solution uses the following Azure services. Details of the deployment archi
 ## Deployment Architecture
 The following section details the deployment and implementation elements.
 
-**Bastion Host**: The bastion host is the single point of entry that allows users to access the deployed resources in this environment. The bastion host provides a secure connection to deployed resources by only allowing remote traffic from public IP addresses on a safe list. To permit remote desktop (RDP) traffic, the source of the traffic needs to be defined in the Network Security Group (NSG).
-
-This solution creates a virtual machine as a domain-joined bastion host with the following configurations:
--	[Antimalware extension](https://docs.microsoft.com/azure/security/azure-security-antimalware)
--	[OMS extension](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-extensions-oms)
--	[Azure Diagnostics extension](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-extensions-diagnostics-template)
--	[Azure Disk Encryption](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) using Azure Key Vault
--	An [auto-shutdown policy](https://azure.microsoft.com/blog/announcing-auto-shutdown-for-vms-using-azure-resource-manager/) to reduce consumption of virtual machine resources when not in use
--	[Windows Defender Credential Guard](https://docs.microsoft.com/windows/access-protection/credential-guard/credential-guard) enabled so that credentials and other secrets run in a protected environment that is isolated from the running operating system
-
 ### Virtual Network
 The architecture defines a private virtual network with an address space of 10.200.0.0/16.
 
@@ -78,6 +68,16 @@ Each of the subnets has a dedicated network security group (NSG):
 - 1 NSG for Primary and Backup Domain Controllers (ADNSG)
 - 1 NSG for SQL Servers and Cloud Witness (SQLNSG)
 - 1 NSG for Web Tier (WEBNSG)
+
+**Bastion Host**: The bastion host is the single point of entry that allows users to access the deployed resources in this environment. The bastion host provides a secure connection to deployed resources by only allowing remote traffic from public IP addresses on a safe list. To permit remote desktop (RDP) traffic, the source of the traffic needs to be defined in the Network Security Group (NSG).
+
+This solution creates a virtual machine as a domain-joined bastion host with the following configurations:
+-	[Antimalware extension](https://docs.microsoft.com/azure/security/azure-security-antimalware)
+-	[OMS extension](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-extensions-oms)
+-	[Azure Diagnostics extension](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-extensions-diagnostics-template)
+-	[Azure Disk Encryption](https://docs.microsoft.com/azure/security/azure-security-disk-encryption) using Azure Key Vault
+-	An [auto-shutdown policy](https://azure.microsoft.com/blog/announcing-auto-shutdown-for-vms-using-azure-resource-manager/) to reduce consumption of virtual machine resources when not in use
+-	[Windows Defender Credential Guard](https://docs.microsoft.com/windows/access-protection/credential-guard/credential-guard) enabled so that credentials and other secrets run in a protected environment that is isolated from the running operating system
 
 ### Data in Transit
 Azure encrypts all communications to and from Azure datacenters by default. Additionally, all transactions to Azure Storage through the Azure Portal occur via HTTPS.
