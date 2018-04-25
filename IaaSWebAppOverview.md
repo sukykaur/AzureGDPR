@@ -169,7 +169,7 @@ Additionally, the following OMS solutions are included as a part of this archite
 
 The data flow diagram (DFD) for this reference architecture is available for [download](https://aka.ms/gdprIaaSdfd) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
 
-![alt text](?raw=true)
+![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20-%20GDPR%20IaaS%20WebApp%20Threat%20Model.PNG?raw=true)
 
 ## Compliance Documentation
 
