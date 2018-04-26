@@ -6,7 +6,7 @@ The General Data Protection Regulation (GDPR) contains many requirements about c
 Microsoft designed Azure with industry-leading security measures and privacy policies to safeguard data in the cloud, including the categories of personal data identified by the GDPR. Microsoft's
 [contractual terms](http://aka.ms/Online-Services-Terms) commit Microsoft to the requirements of processors.
 
-This Azure Security and Compliance Blueprint provides guidance to deploy a Platform as a Service (PaaS) environment suitable for a simple Internet-facing web application. This solution demonstrates ways in which customers can meet the specific security and compliance requirements of the GDPR and serves as a foundation for customers to build and configure their own PaaS Web App solutions in Azure. Customers can utilize this reference architecture and follow Microsoft's [four-step process](https://aka.ms/gdprebook) in their journey to GDPR compliance:
+This Azure Security and Compliance Blueprint provides guidance to deploy a platform as a service (PaaS) environment suitable for a simple Internet-facing web application. This solution demonstrates ways in which customers can meet the specific security and compliance requirements of the GDPR and serves as a foundation for customers to build and configure their own PaaS web application solutions in Azure. Customers can utilize this reference architecture and follow Microsoft's [four-step process](https://aka.ms/gdprebook) in their journey to GDPR compliance:
 1. Discover: Identify which personal data exists and where it resides.
 2. Manage: Govern how personal data is used and accessed.
 3. Protect: Establish security controls to prevent, detect, and respond to vulnerabilities and data breaches.
@@ -17,7 +17,7 @@ This reference architecture, associated implementation guide, and threat model a
 - Customers are responsible for conducting appropriate security and compliance assessments of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
 ## Architecture Diagram and Components
-This solution provides a reference architecture for a PaaS web application with an Azure SQL Database backend. The web application is hosted in an isolated Azure App Service Environment, which is a private, dedicated environment in an Azure datacenter. The environment load balances traffic for the web application across VMs managed by Azure. This architecture also includes network security groups, an application gateway, Azure DNS, and load balancer. Furthermore, Application Insights provides real time application performance management and analytics through Operations Management Suite (OMS). **Azure recommends configuring a VPN or Azure ExpressRoute connection for management and data import into the reference architecture subnet.**
+This solution provides a reference architecture for a PaaS web application with an Azure SQL Database backend. The web application is hosted in an isolated Azure App Service Environment, which is a private, dedicated environment in an Azure datacenter. The environment load balances traffic for the web application across VMs managed by Azure. This architecture also includes network security groups, an Application Gateway, Azure DNS, and Load Balancer. Furthermore, Application Insights provides real time application performance management and analytics through Operations Management Suite (OMS). **Azure recommends configuring a VPN or Azure ExpressRoute connection for management and data import into the reference architecture subnet.**
 
 ![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20-%20GDPR%20Paas%20WebApp%20Reference%20Architecture.png?raw=true)
 
@@ -136,7 +136,7 @@ The solution uses [Azure Key Vault](https://azure.microsoft.com/services/key-vau
 **Security Alerts**: [Azure Security Center](https://docs.microsoft.com/en-us/azure/security-center/security-center-intro) enables customers to monitor traffic, collect logs, and analyze data sources for threats. Additionally, Azure Security Center accesses existing configuration of Azure services to provide configuration and service recommendations to help improve security posture and protect personal data. Azure Security Center includes a [threat intelligence report](https://docs.microsoft.com/en-us/azure/security-center/security-center-threat-report) for each detected threat to assist incident response teams investigate and remediate threats.
 
 **Application Gateway**
-The architecture reduces the risk of security vulnerabilities using an Application Gateway with web application firewall (WAF), and the OWASP ruleset enabled. Additional capabilities include:
+The architecture reduces the risk of security vulnerabilities using an Application Gateway with Web Application Firewall (WAF), and the OWASP ruleset enabled. Additional capabilities include:
 
 - [End-to-End-SSL](https://docs.microsoft.com/azure/application-gateway/application-gateway-end-to-end-ssl-powershell)
 - Enable [SSL Offload](https://docs.microsoft.com/azure/application-gateway/application-gateway-ssl-portal)
@@ -173,19 +173,19 @@ Additionally, the following OMS solutions are included as a part of this archite
 
 ## Threat Model
 
-The data flow diagram (DFD) for this reference architecture is available for [download](https://aka.ms/gdprPaaSdfd) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
+The data flow diagram for this reference architecture is available for [download](https://aka.ms/gdprPaaSdfd) or can be found below. This model can help customers understand the points of potential risk in the system infrastructure when making modifications.
 
 ![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20%E2%80%93%20GDPR%20PaaS%20WebApp%20Threat%20Model.png?raw=true)
 
 ## Compliance Documentation
 The [Azure Security and Compliance Blueprint – GDPR Customer Responsibility Matrix](https://aka.ms/gdprCRM) lists controller and processor responsibilities for all GDPR articles. Please note that for Azure services, a customer is usually the controller and Microsoft acts as the processor.
 
-The [Azure Security and Compliance Blueprint - GDPR PaaS Web App Implementation Matrix](https://aka.ms/gdprPaaSWeb) provides information on which GDPR articles are addressed by the PaaS Web App architecture, including detailed descriptions of how the implementation meets the requirements of each covered article.
+The [Azure Security and Compliance Blueprint - GDPR PaaS Web App Implementation Matrix](https://aka.ms/gdprPaaSWeb) provides information on which GDPR articles are addressed by the PaaS web application architecture, including detailed descriptions of how the implementation meets the requirements of each covered article.
 
 
 ## Guidance and Recommendations
 ### VPN and ExpressRoute
-A secure VPN tunnel or [ExpressRoute](https://docs.microsoft.com/azure/expressroute/expressroute-introduction) needs to be configured to securely establish a connection to the resources deployed as a part of this PaaS Web App reference architecture. By appropriately setting up a VPN or ExpressRoute, customers can add a layer of protection for data in transit.
+A secure VPN tunnel or [ExpressRoute](https://docs.microsoft.com/azure/expressroute/expressroute-introduction) needs to be configured to securely establish a connection to the resources deployed as a part of this PaaS web application reference architecture. By appropriately setting up a VPN or ExpressRoute, customers can add a layer of protection for data in transit.
 
 By implementing a secure VPN tunnel with Azure, a virtual private connection between an on-premises network and an Azure Virtual Network can be created. This connection takes place over the Internet and allows customers to securely “tunnel” information inside an encrypted link between the customer's network and Azure. Site-to-Site VPN is a secure, mature technology that has been deployed by enterprises of all sizes for decades. The [IPsec tunnel mode](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc786385(v=ws.10)) is used in this option as an encryption mechanism.
 
