@@ -17,7 +17,7 @@ This reference architecture, associated implementation guide, and threat model a
 - Customers are responsible for conducting appropriate security and compliance assessments of any solution built using this architecture, as requirements may vary based on the specifics of each customer's implementation.
 
 ## Architecture Diagram and Components
-This solution deploys a reference architecture for an IaaS web application with an Azure SQL Database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management jumpbox (bastion host) provides a secure connection for administrators to access deployed resources. **Azure recommends configuring a VPN or Azure ExpressRoute connection for management and data import into the reference architecture subnet.**
+This solution deploys a reference architecture for an IaaS web application with an Azure SQL Database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management bastion host provides a secure connection for administrators to access deployed resources. **Azure recommends configuring a VPN or Azure ExpressRoute connection for management and data import into the reference architecture subnet.**
 
 ![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20-%20GDPR%20IaaS%20WebApp%20Visio.PNG?raw=true)
 
@@ -74,7 +74,7 @@ See the configuration for [Network Security Groups](https://github.com/Azure/fed
 
 Each of the subnets has a dedicated network security group (NSG):
 - 1 NSG for Application Gateway (LBNSG)
-- 1 NSG for Jumpbox (MGTNSG)
+- 1 NSG for Bastion Host (MGTNSG)
 - 1 NSG for Primary and Backup Domain Controllers (ADNSG)
 - 1 NSG for SQL Servers and Cloud Witness (SQLNSG)
 - 1 NSG for Web Tier (WEBNSG)
