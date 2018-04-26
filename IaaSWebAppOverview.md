@@ -19,7 +19,7 @@ This reference architecture, associated implementation guide, and threat model a
 ## Architecture Diagram and Components
 This solution deploys a reference architecture for an IaaS web application with an Azure SQL Database backend. The architecture includes a web tier, data tier, Active Directory infrastructure, application gateway, and load balancer. Virtual machines deployed to the web and data tiers are configured in an availability set, and SQL Server instances are configured in an AlwaysOn availability group for high availability. Virtual machines are domain-joined, and Active Directory group policies are used to enforce security and compliance configurations at the operating system level. A management bastion host provides a secure connection for administrators to access deployed resources. **Azure recommends configuring a VPN or Azure ExpressRoute connection for management and data import into the reference architecture subnet.**
 
-![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20-%20GDPR%20IaaS%20WebApp%20Visio.PNG?raw=true)
+![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/IaaS%20Visio%20RA.png?raw=true)
 
 This solution uses the following Azure services. Details of the deployment architecture are located in the [deployment architecture](#deployment-architecture) section.
 
