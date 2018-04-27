@@ -80,7 +80,7 @@ Each of the subnets has a dedicated network security group (NSG):
 - 1 NSG for web tier (WEBNSG)
 
 ### Data in transit
-Azure encrypts all communications to and from Azure datacenters by default. Additionally, all transactions to Azure Storage through the Azure Portal occur via HTTPS.
+Azure encrypts all communications to and from Azure datacenters by default. Additionally, all transactions to Azure Storage through the Azure portal occur via HTTPS.
 
 ### Data at rest
 The architecture protects data at rest through multiple measures, including encryption and database auditing.
