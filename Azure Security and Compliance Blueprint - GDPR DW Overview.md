@@ -29,7 +29,7 @@ This data warehouse reference architecture also includes an Active Directory (AD
 
 A virtual machine serves as a management bastion host, providing a secure connection for administrators to access deployed resources. The data loads into the staging area through this management bastion host. **Azure recommends configuring a VPN or Azure ExpressRoute connection for management and data import into the reference architecture subnet.**
 
-![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/GDPR%20DW%20Visio%20Diagram.PNG?raw=true)
+![alt text](https://github.com/sukykaur/AzureGDPR/blob/master/Azure%20Security%20and%20Compliance%20Blueprint%20-%20GDPR%20DW%20Reference%20Architecture.PNG?raw=true)
 
 This solution uses the following Azure services. Details of the deployment architecture are in the [Deployment Architecture](#deployment-architecture) section.
 
